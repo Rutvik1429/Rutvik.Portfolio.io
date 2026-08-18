@@ -1,74 +1,53 @@
-# Rutvik Bambhaniya - Data Analyst Professional Portfolio Website
+# Rutvik Bambhaniya - Data Analyst Interactive React Portfolio Website
 
-This repository contains the source code for **Rutvik Bambhaniya's Data Analyst Portfolio Website**, designed specifically for recruiters, hiring managers, and data analytics leads looking for **Data Analyst, MIS Analyst, Data Operations Analyst, and Business Analyst** talent.
+This repository contains the source code for **Rutvik Bambhaniya's Data Analyst Portfolio Website**, featuring an interactive React.js light-theme interface, real-time data visualization charts (Chart.js), glassmorphism design accents, 3D mouse hover tilt effects, and complete analytics case study modals.
 
 ---
 
-## 🌟 Features & Highlights
+## 🌟 Key Features & Highlights
 
-- **Data Analyst Centric Identity:** Clean, minimal, dark-mode aesthetic with interactive visual metrics, KPI highlights, and data chart visualizations.
-- **Verified Industry Skill Set:** Organized by Data Analysis (SQL, Excel), Business Intelligence (Power BI, DAX, Tableau), Data Science (Python, Pandas, NumPy, EDA, Hypothesis Testing).
-- **Interactive Project Case Studies:** Dynamic modal popups detailing **Business Problem → Objective → Dataset Source → Analytical Workflow → Key Insights → Tech Stack → GitHub Link** for all major projects.
-- **Dashboard Showcase:** Lightbox gallery showcasing high-resolution previews of Power BI, Tableau, and Excel reports.
-- **Recruiter Navigation:** Sticky navigation bar, quick links to GitHub ([Rutvik1429](https://github.com/Rutvik1429)) and LinkedIn ([Rutvik Bambhaniya](https://www.linkedin.com/in/rutvik-bambhaniya-34621732b)), and direct PDF resume download.
-- **100% Free Hosting:** Zero-dependency vanilla HTML5/CSS3/JS built natively for **GitHub Pages** (₹0 hosting cost).
+- **Clean Light Theme Aesthetic:** Crisp, modern, high-contrast light design with *Plus Jakarta Sans* & *JetBrains Mono* typography, soft slate borders, subtle shadows, and indigo/cyan analytics accents.
+- **Interactive React Architecture:** Dynamic component tree built with React 18 hooks for smooth section navigation, project filtering, modal deep-dives, and lightbox previewing.
+- **Live Competency & Quality Visualizer:** Built-in interactive Chart.js visualizations allowing users to toggle between skill matrices, tool distributions, and analytics workflow quality indexes.
+- **Enhanced Mouse Hover Interactivity:** 3D interactive tilt cards, magnetic hover buttons, hover glow cards, and smooth scale transitions.
+- **Project Case Studies Modal:** Deep-dive modal popups detailing **Business Problem → Objective → Dataset Source → Analytical Workflow → Key Insights → Tech Stack → GitHub Repository Link**.
+- **Dashboard Showcase:** High-resolution lightbox gallery displaying Power BI, Tableau, and Excel reports.
+- **Zero-Dependency GitHub Pages Deployment:** Built with standalone ES Modules / Babel for instant ₹0 hosting on GitHub Pages without requiring local build setup.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Structure:** HTML5 (Semantic & Accessible Markup)
-- **Styling:** Custom Vanilla CSS3 (CSS Variables, Flexbox, Grid, Responsive Design)
-- **Interactivity:** Vanilla JavaScript (ES6+, DOM Manipulation, Event Listeners, Lightbox, Filtering)
-- **Icons & Typography:** FontAwesome 6.4 & Google Fonts (*Plus Jakarta Sans* & *JetBrains Mono*)
+- **Framework:** React 18 (Hooks, State Management, DOM Components)
+- **Visualizations:** Chart.js 4 (Interactive Bar, Doughnut, and Line Charts)
+- **Styling:** Custom Vanilla CSS3 (CSS Variables, Flexbox, Grid, Glassmorphic Light Theme, Keyframe Animations)
+- **Icons & Fonts:** FontAwesome 6.4 & Google Fonts (*Plus Jakarta Sans* & *JetBrains Mono*)
 
 ---
 
 ## 🚀 How to Run Locally
 
-Since this application uses standard HTML, CSS, and JavaScript, no build process or server installation is required:
+Since this application uses browser-native React & Babel standalone modules, no complex build process is required:
 
 1. Clone or download this repository to your local computer:
    ```bash
    git clone https://github.com/Rutvik1429/Rutvik1429.github.io.git
    ```
-2. Navigate into the project folder:
-   ```bash
-   cd Rutvik1429.github.io
-   ```
-3. Open `index.html` in any modern web browser (Google Chrome, Microsoft Edge, Safari, Firefox), or use VS Code's **Live Server** extension.
+2. Open `index.html` in any modern browser (Google Chrome, Microsoft Edge, Safari, Firefox) or use VS Code **Live Server**.
 
 ---
 
-## 🌐 How to Deploy to GitHub Pages (100% Free)
+## 🌐 Deploy to GitHub Pages (100% Free)
 
-You can host this portfolio live on the web at `https://Rutvik1429.github.io` for **₹0**:
+Push your changes directly to your repository (`Rutvik1429.github.io`):
 
-### Method 1: Using GitHub User Site (Recommended)
+```bash
+git add .
+git commit -m "Upgrade portfolio to interactive Light Theme React UI"
+git push origin main
+```
 
-1. Create a public repository on GitHub named exactly:
-   ```
-   Rutvik1429.github.io
-   ```
-2. In your terminal, initialize git and push the portfolio files:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial release of Data Analyst Portfolio"
-   git branch -M main
-   git remote add origin https://github.com/Rutvik1429/Rutvik1429.github.io.git
-   git push -u origin main
-   ```
-3. GitHub Pages will automatically publish your portfolio live at:
-   **`https://Rutvik1429.github.io`** within 1 to 2 minutes!
-
----
-
-## 📝 How to Update Portfolio Content
-
-- **Adding / Replacing Resume:** Replace the file in `assets/resume.pdf` with your updated PDF resume.
-- **Adding New Projects:** Open `index.html` and copy an existing `.project-card` block inside `.projects-grid`, then add the project details inside `script.js` in the `projectData` object.
-- **Updating Screenshots:** Add your Power BI / Tableau dashboard screenshots to the `assets/` folder and update the `src` attribute in `index.html`.
+Your live site at `https://Rutvik1429.github.io` will update automatically!
 
 ---
 
