@@ -1,6 +1,6 @@
 /* ==========================================================================
    RUTVIK BAMBHANIYA - DESIGNER-GRADE BENTO ANALYTICS COMMAND CENTER (app.js)
-   React 18 Component Engine + Interactive Code Inspector + Chart Visualizer
+   React 18 Component Engine + Dynamic Dark/Light Theme Toggle + Code Inspector
    ========================================================================== */
 
 const { useState, useEffect, useRef, useMemo } = React;
@@ -261,29 +261,25 @@ const SKILLS_DATA = [
     icon: "fa-solid fa-database",
     title: "Database & SQL",
     desc: "Querying, data aggregation, multi-table JOINs, subqueries, CTEs, and window functions.",
-    tags: ["SQL", "MySQL", "Data Querying", "Joins & Aggregations", "Subqueries", "CTE & Windowing"],
-    accent: "blue"
+    tags: ["SQL", "MySQL", "Data Querying", "Joins & Aggregations", "Subqueries", "CTE & Windowing"]
   },
   {
     icon: "fa-solid fa-chart-pie",
     title: "Business Intelligence",
     desc: "Data modeling, interactive dashboard design, DAX measures, and enterprise reporting.",
-    tags: ["Power BI", "DAX Measures", "Power Query ETL", "Star Schema Modeling", "Tableau"],
-    accent: "cyan"
+    tags: ["Power BI", "DAX Measures", "Power Query ETL", "Star Schema Modeling", "Tableau"]
   },
   {
     icon: "fa-solid fa-table",
     title: "Data Analysis & Excel",
     desc: "Advanced spreadsheet operations, pivot tables, data hygiene, and automated MIS reporting.",
-    tags: ["Advanced Excel", "Pivot Tables", "VLOOKUP / XLOOKUP", "Data Cleaning", "MIS Reporting"],
-    accent: "emerald"
+    tags: ["Advanced Excel", "Pivot Tables", "VLOOKUP / XLOOKUP", "Data Cleaning", "MIS Reporting"]
   },
   {
     icon: "fa-brands fa-python",
     title: "Python & Analytics",
     desc: "Exploratory Data Analysis (EDA), statistical modeling, and data manipulation.",
-    tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "EDA", "Hypothesis Testing"],
-    accent: "purple"
+    tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "EDA", "Hypothesis Testing"]
   }
 ];
 
@@ -359,7 +355,7 @@ function useSpotlight() {
 }
 
 // --- INTERACTIVE CHART COMPONENT ---
-function InteractiveChart() {
+function InteractiveChart({ theme }) {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
   const [chartMode, setChartMode] = useState("skills"); // 'skills' | 'projects' | 'workflow'
@@ -372,6 +368,10 @@ function InteractiveChart() {
     }
 
     const ctx = chartRef.current.getContext("2d");
+    const isDark = theme === "dark";
+
+    const textColor = isDark ? "#cbd5e1" : "#334155";
+    const gridColor = isDark ? "rgba(51, 65, 85, 0.6)" : "rgba(226, 232, 240, 0.8)";
 
     let dataConfig = {};
 
@@ -401,23 +401,27 @@ function InteractiveChart() {
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: "rgba(15, 23, 42, 0.95)",
+              backgroundColor: isDark ? "rgba(15, 23, 42, 0.95)" : "rgba(255, 255, 255, 0.95)",
+              titleColor: isDark ? "#ffffff" : "#0f172a",
+              bodyColor: isDark ? "#cbd5e1" : "#475569",
               titleFont: { family: "Plus Jakarta Sans", size: 13, weight: "bold" },
               bodyFont: { family: "Plus Jakarta Sans", size: 12 },
               padding: 12,
-              cornerRadius: 8
+              cornerRadius: 8,
+              borderColor: isDark ? "#334155" : "#e2e8f0",
+              borderWidth: 1
             }
           },
           scales: {
             y: {
               beginAtZero: true,
               max: 100,
-              grid: { color: "rgba(226, 232, 240, 0.8)" },
-              ticks: { color: "#64748b", font: { family: "Plus Jakarta Sans", size: 12 } }
+              grid: { color: gridColor },
+              ticks: { color: textColor, font: { family: "Plus Jakarta Sans", size: 12 } }
             },
             x: {
               grid: { display: false },
-              ticks: { color: "#334155", font: { family: "Plus Jakarta Sans", size: 11, weight: "700" } }
+              ticks: { color: textColor, font: { family: "Plus Jakarta Sans", size: 11, weight: "700" } }
             }
           }
         }
@@ -432,7 +436,7 @@ function InteractiveChart() {
             data: [3, 2, 2, 2, 1],
             backgroundColor: ["#2563eb", "#0284c7", "#10b981", "#f59e0b", "#8b5cf6"],
             borderWidth: 3,
-            borderColor: "#ffffff"
+            borderColor: isDark ? "#0f172a" : "#ffffff"
           }]
         },
         options: {
@@ -441,7 +445,7 @@ function InteractiveChart() {
           plugins: {
             legend: {
               position: "right",
-              labels: { font: { family: "Plus Jakarta Sans", size: 13, weight: "600" }, color: "#1e293b", padding: 16 }
+              labels: { font: { family: "Plus Jakarta Sans", size: 13, weight: "600" }, color: textColor, padding: 16 }
             }
           }
         }
@@ -455,7 +459,7 @@ function InteractiveChart() {
             label: "Accuracy & Quality Metrics",
             data: [75, 88, 92, 95, 97, 99],
             fill: true,
-            backgroundColor: "rgba(37, 99, 235, 0.1)",
+            backgroundColor: "rgba(37, 99, 235, 0.15)",
             borderColor: "#2563eb",
             borderWidth: 3,
             pointBackgroundColor: "#2563eb",
@@ -468,8 +472,8 @@ function InteractiveChart() {
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            y: { beginAtZero: true, max: 100, grid: { color: "rgba(226, 232, 240, 0.8)" } },
-            x: { grid: { display: false } }
+            y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { color: textColor } },
+            x: { grid: { display: false }, ticks: { color: textColor } }
           }
         }
       };
@@ -482,7 +486,7 @@ function InteractiveChart() {
         chartInstance.current.destroy();
       }
     };
-  }, [chartMode]);
+  }, [chartMode, theme]);
 
   return (
     <div className="interactive-chart-container">
@@ -581,6 +585,7 @@ function BentoProjectCard({ project, openModal }) {
 
 // --- MAIN APP COMPONENT ---
 function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem("portfolio_theme") || "light");
   const [activeNav, setActiveNav] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -589,6 +594,16 @@ function App() {
   const [selectedLightbox, setSelectedLightbox] = useState(null);
 
   const spotlightProps = useSpotlight();
+
+  // Apply Theme Attribute to HTML element
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("portfolio_theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   // Scroll spy & Header scroll background
   useEffect(() => {
@@ -682,9 +697,21 @@ function App() {
           </nav>
 
           <div className="nav-actions">
+            {/* Theme Toggle Button */}
+            <button
+              className="theme-toggle-btn hover-magnetic"
+              onClick={toggleTheme}
+              aria-label="Toggle dark/light theme"
+              title={`Switch to ${theme === "light" ? "Dark" : "Light"} Mode`}
+            >
+              <i className={`fa-solid ${theme === "light" ? "fa-moon" : "fa-sun"}`}></i>
+              <span className="theme-toggle-text">{theme === "light" ? "Dark" : "Light"}</span>
+            </button>
+
             <a href="assets/resume.pdf" target="_blank" className="btn btn-outline btn-sm hover-magnetic">
               <i className="fa-solid fa-file-arrow-down"></i> Resume
             </a>
+
             <button
               className="nav-toggle"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -852,7 +879,7 @@ function App() {
                 <h3><i className="fa-solid fa-chart-area text-blue"></i> Interactive Data Studio</h3>
                 <p>Explore technical skill competency indexes, project tool distribution, and analytics quality metrics dynamically.</p>
               </div>
-              <InteractiveChart />
+              <InteractiveChart theme={theme} />
             </div>
           </div>
         </section>
