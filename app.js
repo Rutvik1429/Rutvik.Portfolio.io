@@ -271,15 +271,27 @@ const SKILLS_DATA = [
   },
   {
     icon: "fa-solid fa-table",
-    title: "Data Analysis & Excel",
-    desc: "Advanced spreadsheet operations, pivot tables, data hygiene, and automated MIS reporting.",
-    tags: ["Advanced Excel", "Pivot Tables", "VLOOKUP / XLOOKUP", "Data Cleaning", "MIS Reporting"]
+    title: "Excel, Google Sheets & Apps Script",
+    desc: "Advanced spreadsheet engineering, Google Sheets automations via Google Apps Script (GAS), dynamic array formulas, and automated MIS reporting.",
+    tags: ["Advanced Excel", "Google Sheets", "Google Apps Script (GAS)", "Workflow Automation", "Pivot Tables", "VLOOKUP / XLOOKUP", "MIS Reporting"]
   },
   {
     icon: "fa-brands fa-python",
     title: "Python & Analytics",
     desc: "Exploratory Data Analysis (EDA), statistical modeling, and data manipulation.",
     tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "EDA", "Hypothesis Testing"]
+  },
+  {
+    icon: "fa-solid fa-brain",
+    title: "AI-Powered Analytics & Vibe Coding",
+    desc: "Leveraging Claude AI to accelerate exploratory analysis, synthesize executive reporting narratives, and rapidly code automation scripts.",
+    tags: ["Claude AI", "Vibe Coding", "AI-Augmented EDA", "Automated Scripting", "Prompt Engineering for Data", "Report Generation"]
+  },
+  {
+    icon: "fa-solid fa-boxes-packing",
+    title: "Operations & Supply Chain Analytics",
+    desc: "Inventory turnover, stockout prevention, SKU velocity, vendor performance, and demand analytics.",
+    tags: ["Supply Chain KPIs", "Inventory Analytics", "SKU Velocity", "Order Fulfillment", "Vendor Scorecards", "D2C Metrics"]
   }
 ];
 
@@ -668,7 +680,9 @@ function App() {
       <header className={`site-header ${isScrolled ? "scrolled" : ""}`} id="header">
         <div className="container nav-container">
           <a href="#home" className="nav-logo">
-            <span className="logo-icon"><i className="fa-solid fa-chart-pie"></i></span>
+            <span className="logo-icon">
+              <img src="assets/my website logo.png" alt="Rutvik Bambhaniya Logo" className="header-logo-img" />
+            </span>
             <span className="logo-text">Rutvik Bambhaniya</span>
           </a>
 
@@ -729,66 +743,90 @@ function App() {
           <div className="container">
             <div className="bento-hero-grid">
               
-              {/* Bento Card 1: Main Introduction */}
-              <div className="bento-card bento-hero-main spotlight-card" {...spotlightProps}>
-                <div className="badge badge-accent animate-fadeIn">
-                  <i className="fa-solid fa-circle-dot pulsate"></i> Open for Data Analyst Opportunities
+              {/* Left Column: Main Bio + Metrics */}
+              <div className="bento-hero-left">
+                {/* Bento Card 1: Main Introduction */}
+                <div className="bento-card bento-hero-main spotlight-card" {...spotlightProps}>
+                  <div className="badge badge-accent animate-fadeIn">
+                    <i className="fa-solid fa-circle-dot pulsate"></i> Data Analyst @ Alpino | Surat
+                  </div>
+                  <h1 className="hero-title">
+                    Hi, I'm <span className="text-highlight">Rutvik Bambhaniya</span>
+                  </h1>
+                  <h2 className="hero-subtitle">Data Analyst @ Alpino | Power BI & SQL Specialist | Operations & Supply Chain Focus</h2>
+                  <p className="hero-description">
+                    Turning complex business datasets into actionable intelligence using <strong>SQL, Advanced Excel, Google Sheets, Power BI, Python & Tableau</strong>. Driving sales performance, inventory visibility, and operational analytics as a <strong>Data Analyst at Alpino (Surat)</strong>, augmented with <strong>Google Apps Script (GAS)</strong> automation and <strong>Claude AI</strong>. Pursuing an <strong>MBA in Operations (Supply Chain) & Data Science from NMIMS University</strong>, backed by a BCA degree and ExcelR analytics training.
+                  </p>
+                  <div className="hero-actions">
+                    <a href="#projects" className="btn btn-primary btn-lg hover-magnetic">
+                      <i className="fa-solid fa-diagram-project"></i> View Analytics Projects
+                    </a>
+                    <a href="assets/resume.pdf" target="_blank" className="btn btn-secondary btn-lg hover-magnetic">
+                      <i className="fa-solid fa-file-pdf"></i> Download Resume
+                    </a>
+                  </div>
                 </div>
-                <h1 className="hero-title">
-                  Hi, I'm <span className="text-highlight">Rutvik Bambhaniya</span>
-                </h1>
-                <h2 className="hero-subtitle">Data Analyst | Power BI & SQL Specialist</h2>
-                <p className="hero-description">
-                  Turning complex datasets into actionable business intelligence using <strong>SQL, Excel, Power BI, Python & Tableau</strong>. BCA Graduate with a 6-month Data Analyst internship and specialized ExcelR training in ETL & Star Schema data modeling.
-                </p>
-                <div className="hero-actions">
-                  <a href="#projects" className="btn btn-primary btn-lg hover-magnetic">
-                    <i className="fa-solid fa-diagram-project"></i> View Analytics Projects
-                  </a>
-                  <a href="assets/resume.pdf" target="_blank" className="btn btn-secondary btn-lg hover-magnetic">
-                    <i className="fa-solid fa-file-pdf"></i> Download Resume
-                  </a>
+
+                {/* Bento Card 2: Key Metrics Widget */}
+                <div className="bento-card bento-hero-stats spotlight-card" {...spotlightProps}>
+                  <div className="stat-widget-header">
+                    <span className="stat-widget-title"><i className="fa-solid fa-chart-line"></i> Analytics Profile Highlights</span>
+                  </div>
+                  <div className="stat-widget-grid">
+                    <div className="stat-box hover-glow">
+                      <span className="stat-num">Alpino</span>
+                      <span className="stat-label">Data Analyst (Surat)</span>
+                    </div>
+                    <div className="stat-box hover-glow">
+                      <span className="stat-num">NMIMS</span>
+                      <span className="stat-label">MBA (Ops & DS)</span>
+                    </div>
+                    <div className="stat-box hover-glow">
+                      <span className="stat-num">SQL & BI</span>
+                      <span className="stat-label">Core Toolbox</span>
+                    </div>
+                    <div className="stat-box hover-glow">
+                      <span className="stat-num">Excel & GAS</span>
+                      <span className="stat-label">Automation & Sheets</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Bento Card 2: Key Metrics Widget */}
-              <div className="bento-card bento-hero-stats spotlight-card" {...spotlightProps}>
-                <div className="stat-widget-header">
-                  <span className="stat-widget-title"><i className="fa-solid fa-chart-line"></i> Analytics KPI Highlights</span>
-                </div>
-                <div className="stat-widget-grid">
-                  <div className="stat-box hover-glow">
-                    <span className="stat-num">6 Mo.</span>
-                    <span className="stat-label">Internship Exp.</span>
-                  </div>
-                  <div className="stat-box hover-glow">
-                    <span className="stat-num">7+</span>
-                    <span className="stat-label">GitHub Repos</span>
-                  </div>
-                  <div className="stat-box hover-glow">
-                    <span className="stat-num">SQL & BI</span>
-                    <span className="stat-label">Core Toolbox</span>
-                  </div>
-                  <div className="stat-box hover-glow">
-                    <span className="stat-num">BCA</span>
-                    <span className="stat-label">Degree Grad.</span>
+              {/* Right Column: Profile Portrait Avatar + Quick Connect */}
+              <div className="bento-hero-right">
+                {/* Bento Card 3: Illustrated Portrait Card */}
+                <div className="bento-card bento-hero-avatar spotlight-card" {...spotlightProps}>
+                  <div className="hero-avatar-img-container">
+                    <img 
+                      src="assets/my image for website.png" 
+                      alt="Rutvik Bambhaniya - Data Analyst" 
+                      className="hero-avatar-img" 
+                      loading="eager"
+                    />
+                    <div className="avatar-badge-float">
+                      <span className="badge-float-title">
+                        <i className="fa-solid fa-chart-line text-blue"></i> Turning Data into Opportunities
+                      </span>
+                      <span className="badge-float-sub">Analyze • Solve • Improve • Grow</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Bento Card 3: Social & Quick Connect */}
-              <div className="bento-card bento-hero-socials spotlight-card" {...spotlightProps}>
-                <span className="social-card-title">Quick Connect</span>
-                <div className="social-buttons-grid">
-                  <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener" className="social-pill hover-bounce">
-                    <i className="fa-brands fa-linkedin text-blue"></i> LinkedIn
-                  </a>
-                  <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener" className="social-pill hover-bounce">
-                    <i className="fa-brands fa-github text-blue"></i> GitHub
-                  </a>
-                  <a href="mailto:rutvikbambhaniya14@gmail.com" className="social-pill hover-bounce">
-                    <i className="fa-solid fa-envelope text-blue"></i> Email Me
-                  </a>
+                {/* Bento Card 4: Social & Quick Connect */}
+                <div className="bento-card bento-hero-socials spotlight-card" {...spotlightProps}>
+                  <span className="social-card-title">Quick Connect</span>
+                  <div className="social-buttons-grid">
+                    <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener" className="social-pill hover-bounce">
+                      <i className="fa-brands fa-linkedin text-blue"></i> LinkedIn
+                    </a>
+                    <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener" className="social-pill hover-bounce">
+                      <i className="fa-brands fa-github text-blue"></i> GitHub
+                    </a>
+                    <a href="mailto:rutvikbambhaniya14@gmail.com" className="social-pill hover-bounce">
+                      <i className="fa-solid fa-envelope text-blue"></i> Email Me
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -807,17 +845,18 @@ function App() {
 
             <div className="bento-about-grid">
               <div className="bento-card spotlight-card bio-bento" {...spotlightProps}>
-                <h3><i className="fa-solid fa-user-graduate text-blue"></i> Early-Career Data Analyst</h3>
+                <h3><i className="fa-solid fa-user-tie text-blue"></i> Data Analyst & Operations Strategist</h3>
                 <p>
-                  I am a motivated <strong>Data Analyst</strong> with a degree in <strong>Bachelor of Computer Applications (BCA)</strong> and professional training from <strong>ExcelR</strong>. My background includes a <strong>6-month Data Analyst internship</strong>, where I solved business-centric data challenges using structured query languages, statistical tools, and interactive BI dashboards.
+                  I am a results-driven <strong>Data Analyst currently working at Alpino (Surat)</strong>, where I empower business stakeholders by translating multi-channel sales, inventory, and supply chain data into high-impact interactive dashboards and actionable operational intelligence.
                 </p>
                 <p>
-                  I specialize in taking unstructured raw datasets, cleaning and transforming them through ETL pipelines, establishing robust relational data models (Star Schema), and developing intuitive dashboards that empower non-technical stakeholders to make evidence-based decisions.
+                  With a solid foundation in <strong>Bachelor of Computer Applications (BCA)</strong> and professional data analytics training from <strong>ExcelR</strong>, I am further advancing my leadership and operational vision by pursuing an <strong>MBA in Operations (Supply Chain Management) & Data Science from NMIMS University</strong>. My core focus lies at the intersection of data analytics, supply chain optimization, inventory replenishment, and data-backed business strategy.
                 </p>
                 <div className="target-roles-cloud">
                   <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Data Analyst</span>
+                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Supply Chain Analyst</span>
+                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Operations Analyst</span>
                   <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> MIS Analyst</span>
-                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Data Operations Analyst</span>
                   <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Business Analyst</span>
                 </div>
               </div>
@@ -828,9 +867,19 @@ function App() {
                   <li className="timeline-item">
                     <div className="timeline-marker"></div>
                     <div className="timeline-content">
+                      <span className="timeline-date">Pursuing / Active</span>
+                      <h4>MBA in Operations (Supply Chain) & Data Science</h4>
+                      <p className="timeline-org">NMIMS University (Narsee Monjee Institute of Management Studies)</p>
+                      <p className="timeline-desc">Specialized management curriculum bridging supply chain optimization, operations analytics, logistics management, and predictive data science.</p>
+                    </div>
+                  </li>
+                  <li className="timeline-item">
+                    <div className="timeline-marker"></div>
+                    <div className="timeline-content">
                       <span className="timeline-date">Graduated</span>
                       <h4>Bachelor of Computer Applications (BCA)</h4>
                       <p className="timeline-org">University Level Degree</p>
+                      <p className="timeline-desc">Comprehensive foundation in database management systems (DBMS), structured query logic, and software computing fundamentals.</p>
                     </div>
                   </li>
                   <li className="timeline-item">
@@ -893,41 +942,89 @@ function App() {
               <div className="section-divider"></div>
             </div>
 
-            <div className="bento-card spotlight-card experience-bento" {...spotlightProps}>
-              <div className="exp-header">
-                <div className="exp-role-info">
-                  <h3 className="exp-title"><i className="fa-solid fa-briefcase text-blue"></i> Data Analyst Intern</h3>
-                  <span className="exp-company">Data Analytics Team</span>
+            <div className="experience-container">
+              {/* Current Role: Alpino (Surat) */}
+              <div className="bento-card spotlight-card experience-bento active-role" {...spotlightProps}>
+                <div className="exp-header">
+                  <div className="exp-role-info">
+                    <h3 className="exp-title"><i className="fa-solid fa-briefcase text-blue"></i> Data Analyst</h3>
+                    <span className="exp-company">
+                      Alpino
+                      <span className="exp-location"><i className="fa-solid fa-location-dot"></i> Surat, Gujarat</span>
+                    </span>
+                  </div>
+                  <div className="exp-duration">
+                    <span className="badge badge-accent"><i className="fa-solid fa-circle-dot pulsate"></i> Jan 2026 – Present</span>
+                  </div>
                 </div>
-                <div className="exp-duration">
-                  <span className="badge badge-accent"><i className="fa-regular fa-calendar"></i> 6 Months Duration</span>
+
+                <div className="exp-body">
+                  <p className="exp-summary">
+                    Spearheading business intelligence and operational data analytics across Alpino's multi-channel retail footprint (D2C E-commerce, Marketplaces, and Quick Commerce). Translating transactional and inventory data into executive dashboards that optimize sales velocity, stock turnover, and supply chain fulfillment.
+                  </p>
+
+                  <h4 className="exp-subheading">Key Responsibilities & Impact:</h4>
+                  <ul className="exp-list">
+                    {[
+                      "Engineered and automated interactive Power BI & spreadsheet dashboards tracking multi-channel sales performance, daily revenue, SKU-level velocity, and customer repeat purchase behavior across D2C, Marketplaces, and Quick Commerce.",
+                      "Formulated daily and weekly automated reporting pipelines using Advanced Excel and Google Sheets, integrated with Google Apps Script (GAS) to sync live order feeds and automate recurring data refreshes.",
+                      "Leveraged Claude AI and 'Vibe Coding' methodologies to rapidly script automation workflows, accelerate exploratory data analysis (EDA), and synthesize executive narrative summaries for cross-functional leads.",
+                      "Formulated complex SQL queries and ETL workflows to extract, clean, and consolidate disparate transactional, distributor, and inventory records into unified relational models.",
+                      "Collaborated closely with supply chain and operations teams to monitor stockout risks, model reorder quantities, and track vendor lead times to safeguard inventory turnover.",
+                      "Authored custom DAX calculations and automated recurring MIS reporting routines, cutting executive report generation time significantly."
+                    ].map((item, i) => (
+                      <li key={i} className="hover-slide-right"><i className="fa-solid fa-circle-check text-blue"></i> {item}</li>
+                    ))}
+                  </ul>
+
+                  <div className="exp-tools">
+                    <span className="tools-label">Tools Used:</span>
+                    <div className="tag-cloud">
+                      {["Power BI", "SQL", "Advanced Excel", "Google Sheets", "Google Apps Script (GAS)", "Claude AI (Vibe Coding)", "Python (Pandas)", "DAX", "Supply Chain Analytics", "MIS Automation"].map((t, i) => (
+                        <span key={i} className="tech-tag hover-scale">{t}</span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="exp-body">
-                <p className="exp-summary">
-                  Participated in end-to-end data analytics activities including data extraction, cleaning, Exploratory Data Analysis (EDA), interactive dashboard development, and business stakeholder reporting.
-                </p>
+              {/* Prior Experience: Data Analyst Intern */}
+              <div className="bento-card spotlight-card experience-bento" {...spotlightProps}>
+                <div className="exp-header">
+                  <div className="exp-role-info">
+                    <h3 className="exp-title"><i className="fa-solid fa-user-gear text-blue"></i> Data Analyst Intern</h3>
+                    <span className="exp-company">Data Analytics Team</span>
+                  </div>
+                  <div className="exp-duration">
+                    <span className="badge badge-accent"><i className="fa-regular fa-calendar"></i> 6 Months Duration</span>
+                  </div>
+                </div>
 
-                <h4 className="exp-subheading">Key Responsibilities & Contributions:</h4>
-                <ul className="exp-list">
-                  {[
-                    "Extracted and consolidated business data from multiple flat files and relational databases using SQL queries.",
-                    "Cleaned, preprocessed, and handled missing data fields using Excel and Python (Pandas/NumPy) to ensure data accuracy.",
-                    "Designed and published interactive Power BI and Tableau dashboards to track key performance indicators (KPIs) and operational metrics.",
-                    "Built star-schema data models and engineered reusable DAX calculations to automate recurring monthly MIS reports.",
-                    "Presented data-backed findings to operational managers to support workflow improvements and inventory tracking."
-                  ].map((item, i) => (
-                    <li key={i} className="hover-slide-right"><i className="fa-solid fa-circle-check text-blue"></i> {item}</li>
-                  ))}
-                </ul>
+                <div className="exp-body">
+                  <p className="exp-summary">
+                    Participated in end-to-end data analytics activities including data extraction, cleaning, Exploratory Data Analysis (EDA), interactive dashboard development, and business stakeholder reporting.
+                  </p>
 
-                <div className="exp-tools">
-                  <span className="tools-label">Tools Used:</span>
-                  <div className="tag-cloud">
-                    {["SQL", "Power BI", "Excel", "Python (Pandas/NumPy)", "Tableau", "DAX"].map((t, i) => (
-                      <span key={i} className="tech-tag hover-scale">{t}</span>
+                  <h4 className="exp-subheading">Key Responsibilities & Contributions:</h4>
+                  <ul className="exp-list">
+                    {[
+                      "Extracted and consolidated business data from multiple flat files and relational databases using SQL queries.",
+                      "Cleaned, preprocessed, and handled missing data fields using Excel and Python (Pandas/NumPy) to ensure data accuracy.",
+                      "Designed and published interactive Power BI and Tableau dashboards to track key performance indicators (KPIs) and operational metrics.",
+                      "Built star-schema data models and engineered reusable DAX calculations to automate recurring monthly MIS reports.",
+                      "Presented data-backed findings to operational managers to support workflow improvements and inventory tracking."
+                    ].map((item, i) => (
+                      <li key={i} className="hover-slide-right"><i className="fa-solid fa-circle-check text-blue"></i> {item}</li>
                     ))}
+                  </ul>
+
+                  <div className="exp-tools">
+                    <span className="tools-label">Tools Used:</span>
+                    <div className="tag-cloud">
+                      {["SQL", "Power BI", "Excel", "Python (Pandas/NumPy)", "Tableau", "DAX"].map((t, i) => (
+                        <span key={i} className="tech-tag hover-scale">{t}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1030,7 +1127,7 @@ function App() {
                 <span className="badge badge-accent"><i className="fa-solid fa-file-contract"></i> Professional Credentials</span>
                 <h2>Ready to Review My Full Resume?</h2>
                 <p>
-                  Download my complete resume detailing my BCA degree, ExcelR Data Analyst training, 6-month internship experience, and technical skill set.
+                  Download my complete resume detailing my Data Analyst work at Alpino (Surat), NMIMS MBA in Operations & Data Science, BCA degree, and technical analytics skill set.
                 </p>
               </div>
               <div className="resume-cta">
@@ -1051,7 +1148,7 @@ function App() {
             <div className="section-header">
               <span className="section-badge">Get In Touch</span>
               <h2 className="section-title">Contact Me</h2>
-              <p className="section-subtitle">Interested in hiring a Data Analyst or discussing analytics opportunities? Let's connect!</p>
+              <p className="section-subtitle">Interested in hiring a Data Analyst or discussing analytics & supply chain opportunities? Let's connect!</p>
               <div className="section-divider"></div>
             </div>
 
@@ -1089,7 +1186,7 @@ function App() {
                     <div className="c-icon"><i className="fa-solid fa-location-dot"></i></div>
                     <div className="c-details">
                       <span className="c-label">Location Preference</span>
-                      <span className="c-value">India (Open to Remote & Onsite Roles)</span>
+                      <span className="c-value">Surat / India (Open to Remote & Onsite Roles)</span>
                     </div>
                   </div>
                 </div>
@@ -1097,14 +1194,14 @@ function App() {
 
               <div className="bento-card spotlight-card contact-cta-bento" {...spotlightProps}>
                 <h3><i className="fa-solid fa-handshake text-blue"></i> Open for Job Opportunities</h3>
-                <p>I am actively applying for the following full-time or contract roles:</p>
+                <p>I am actively open for the following roles & opportunities:</p>
                 <ul className="role-list">
                   {[
                     "Data Analyst",
-                    "MIS Analyst / MIS Executive",
-                    "Data Operations Analyst",
-                    "Business Analyst (Entry Level)",
-                    "Operations Analyst"
+                    "Supply Chain Analyst",
+                    "Operations Analyst",
+                    "MIS Analyst / Executive",
+                    "Business Analyst"
                   ].map((role, i) => (
                     <li key={i} className="hover-slide-right"><i className="fa-solid fa-chevron-right text-blue"></i> {role}</li>
                   ))}
@@ -1124,8 +1221,11 @@ function App() {
       <footer className="site-footer">
         <div className="container footer-content">
           <div className="footer-brand">
-            <a href="#home" className="footer-logo">Rutvik Bambhaniya</a>
-            <p>Data Analyst | Turning raw data into business intelligence.</p>
+            <div className="footer-logo-wrap">
+              <img src="assets/my website logo.png" alt="Rutvik Bambhaniya Logo" className="footer-logo-img" />
+              <a href="#home" className="footer-logo">Rutvik Bambhaniya</a>
+            </div>
+            <p>Data Analyst @ Alpino | Turning complex data into business intelligence & opportunities.</p>
           </div>
           <div className="footer-links">
             <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener"><i className="fa-brands fa-github"></i> GitHub</a>
