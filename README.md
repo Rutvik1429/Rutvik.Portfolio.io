@@ -1,16 +1,29 @@
-# Rutvik Bambhaniya - Data Analyst Interactive React Portfolio Website
+# Rutvik Bambhaniya - Data Analyst Interactive Bento Portfolio Website
 
-This repository contains the source code for **Rutvik Bambhaniya's Data Analyst Portfolio Website**, featuring an interactive React.js light-theme interface, real-time data visualization charts (Chart.js), glassmorphism design accents, 3D mouse hover tilt effects, and complete analytics case study modals.
+This repository contains the source code for **Rutvik Bambhaniya's Data Analyst Portfolio Website**, featuring an interactive React.js interface with dark/light mode toggle, Bento Grid command center layout, real-time data visualization charts (Chart.js), glassmorphism design accents, 3D mouse hover tilt effects, and code/query inspector modals.
+
+---
+
+## 👨‍💻 Professional Background
+
+- **Current Role:** Data Analyst at **Alpino (Surat, Gujarat)** — *Jan 2026 – Present*
+  - Spearheading multi-channel sales analytics, inventory visibility, SKU velocity tracking, and automated Power BI / Excel / Google Sheets MIS dashboards across D2C, e-commerce marketplaces (Amazon, Flipkart), and quick-commerce channels (Blinkit, Zepto, Instamart).
+  - Leveraging **Google Apps Script (GAS)** to automate scheduled spreadsheet data pipelines and **Claude AI & Vibe Coding** to accelerate exploratory data analysis, scripting, and executive reporting narratives.
+- **Education:**
+  - **MBA in Operations (Supply Chain Management) & Data Science** — *NMIMS University (Narsee Monjee Institute of Management Studies)* | *Pursuing*
+  - **Bachelor of Computer Applications (BCA)** — *Graduated*
+  - **Data Analyst Certification** — *ExcelR*
+- **Core Focus:** Bridging Data Analytics with Supply Chain Optimization, Inventory Planning, and Executive Decision Support.
 
 ---
 
 ## 🌟 Key Features & Highlights
 
-- **Clean Light Theme Aesthetic:** Crisp, modern, high-contrast light design with *Plus Jakarta Sans* & *JetBrains Mono* typography, soft slate borders, subtle shadows, and indigo/cyan analytics accents.
-- **Interactive React Architecture:** Dynamic component tree built with React 18 hooks for smooth section navigation, project filtering, modal deep-dives, and lightbox previewing.
-- **Live Competency & Quality Visualizer:** Built-in interactive Chart.js visualizations allowing users to toggle between skill matrices, tool distributions, and analytics workflow quality indexes.
-- **Enhanced Mouse Hover Interactivity:** 3D interactive tilt cards, magnetic hover buttons, hover glow cards, and smooth scale transitions.
-- **Project Case Studies Modal:** Deep-dive modal popups detailing **Business Problem → Objective → Dataset Source → Analytical Workflow → Key Insights → Tech Stack → GitHub Repository Link**.
+- **Bento Grid Command Center with Profile Portrait:** Modern executive layout featuring Rutvik's custom logo and portrait with dark/light theme switching.
+- **AI-Augmented & Automated Analytics Stack:** Showcasing practical integration of **Google Sheets**, **Google Apps Script (GAS)**, and **Claude AI** for streamlined reporting workflows.
+- **Interactive Code & Query Inspector:** Inspect actual SQL queries, DAX measures, and Python EDA scripts directly inside project cards.
+- **Interactive Data Studio:** Embedded Chart.js engine allowing visitors to toggle between Skill Competency, Tool Distribution, and Workflow Quality.
+- **Project Case Studies:** Deep-dive modal popups detailing **Business Problem → Objective → Dataset Source → Analytical Workflow → Key Insights → Tech Stack → GitHub Repository Link**.
 - **Dashboard Showcase:** High-resolution lightbox gallery displaying Power BI, Tableau, and Excel reports.
 - **Zero-Dependency GitHub Pages Deployment:** Built with standalone ES Modules / Babel for instant ₹0 hosting on GitHub Pages without requiring local build setup.
 
@@ -20,14 +33,12 @@ This repository contains the source code for **Rutvik Bambhaniya's Data Analyst 
 
 - **Framework:** React 18 (Hooks, State Management, DOM Components)
 - **Visualizations:** Chart.js 4 (Interactive Bar, Doughnut, and Line Charts)
-- **Styling:** Custom Vanilla CSS3 (CSS Variables, Flexbox, Grid, Glassmorphic Light Theme, Keyframe Animations)
+- **Styling:** Custom Vanilla CSS3 (CSS Variables, Flexbox, Grid, Glassmorphic Theme, Keyframe Animations)
 - **Icons & Fonts:** FontAwesome 6.4 & Google Fonts (*Plus Jakarta Sans* & *JetBrains Mono*)
 
 ---
 
 ## 🚀 How to Run Locally
-
-Since this application uses browser-native React & Babel standalone modules, no complex build process is required:
 
 1. Clone or download this repository to your local computer:
    ```bash
@@ -43,7 +54,7 @@ Push your changes directly to your repository (`Rutvik1429.github.io`):
 
 ```bash
 git add .
-git commit -m "Upgrade portfolio to interactive Light Theme React UI"
+git commit -m "Update portfolio with Alpino Data Analyst experience and NMIMS MBA"
 git push origin main
 ```
 
@@ -55,6 +66,7 @@ Your live site at `https://Rutvik1429.github.io` will update automatically!
 
 - **Name:** Rutvik Bambhaniya
 - **Role:** Data Analyst
+- **Location:** Surat, Gujarat, India
 - **LinkedIn:** [linkedin.com/in/rutvik-bambhaniya-34621732b](https://www.linkedin.com/in/rutvik-bambhaniya-34621732b)
 - **GitHub:** [github.com/Rutvik1429](https://github.com/Rutvik1429)
 - **Email:** rutvikbambhaniya14@gmail.com
