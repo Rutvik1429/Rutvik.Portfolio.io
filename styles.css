@@ -306,12 +306,22 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: var(--primary-gradient);
-    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    background: transparent;
     border-radius: var(--radius-sm);
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+
+.header-logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover .header-logo-img {
+    transform: scale(1.08) rotate(-3deg);
 }
 
 .nav-list {
@@ -533,14 +543,24 @@ button {
 
 .bento-hero-grid {
     display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1.22fr 0.78fr;
+    gap: 1.8rem;
+    align-items: stretch;
+}
+
+.bento-hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.bento-hero-right {
+    display: flex;
+    flex-direction: column;
     gap: 1.8rem;
 }
 
 .bento-hero-main {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
     padding: 3rem 2.5rem;
 }
 
@@ -572,10 +592,86 @@ button {
     flex-wrap: wrap;
 }
 
+/* Bento Hero Avatar Card */
+.bento-hero-avatar {
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    flex: 1;
+}
+
+.hero-avatar-img-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 40%, rgba(37, 99, 235, 0.08) 0%, transparent 75%);
+}
+
+.hero-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bento-hero-avatar:hover .hero-avatar-img {
+    transform: scale(1.04);
+}
+
+.avatar-badge-float {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    right: 1.2rem;
+    background: rgba(15, 23, 42, 0.88);
+    color: #ffffff;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.75rem 1.1rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+[data-theme="light"] .avatar-badge-float {
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--text-primary);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.badge-float-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.badge-float-sub {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
 /* Hero Stats Widget Bento */
 .bento-hero-stats {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
     padding: 1.8rem;
 }
 
@@ -629,9 +725,19 @@ button {
 
 /* Hero Socials Bento */
 .bento-hero-socials {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
     padding: 1.5rem 1.8rem;
+}
+
+.footer-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.footer-logo-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
 }
 
 .social-card-title {
@@ -895,8 +1001,19 @@ button {
 /* ==========================================================================
    EXPERIENCE BENTO
    ========================================================================== */
+.experience-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 .experience-bento {
     padding: 2.5rem;
+}
+
+.experience-bento.active-role {
+    border-color: rgba(37, 99, 235, 0.4);
+    box-shadow: 0 8px 30px -6px rgba(37, 99, 235, 0.12);
 }
 
 .exp-header {
@@ -921,10 +1038,20 @@ button {
 
 .exp-company {
     display: block;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-secondary);
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--accent-blue);
     margin-top: 0.3rem;
+}
+
+.exp-location {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: 0.6rem;
 }
 
 .exp-summary {
@@ -968,6 +1095,7 @@ button {
     gap: 1rem;
     border-top: 1px solid var(--border-color);
     padding-top: 1.2rem;
+    flex-wrap: wrap;
 }
 
 .tools-label {
@@ -1482,12 +1610,11 @@ button {
 @media (max-width: 992px) {
     .bento-hero-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        gap: 1.5rem;
     }
     
-    .bento-hero-main, .bento-hero-stats, .bento-hero-socials {
-        grid-column: 1 / -1;
-        grid-row: auto;
+    .bento-hero-left, .bento-hero-right {
+        gap: 1.5rem;
     }
 
     .bento-about-grid {
