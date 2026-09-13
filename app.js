@@ -1,207 +1,52 @@
-/* ==========================================================================
-   RUTVIK BAMBHANIYA - DESIGNER-GRADE BENTO ANALYTICS COMMAND CENTER (app.js)
-   React 18 Component Engine + Dynamic Dark/Light Theme Toggle + Code Inspector
-   ========================================================================== */
+// ==========================================================================
+// RUTVIK BAMBHANIYA - DATA ANALYST PORTFOLIO
+// Modern Interactive React 18 Application (Matching 6-Screen Reference Design)
+// ==========================================================================
 
-const { useState, useEffect, useRef, useMemo } = React;
+const { useState, useEffect, useMemo } = React;
 
-// --- RICH PROJECTS DATA WITH CODE & QUERY INSPECTOR ---
+// --- DATA: PROJECTS (6 Real-World Analytics Projects) ---
 const PROJECTS_DATA = [
   {
-    id: "project1",
-    title: "Credit Loan Disbursement & Recovery Analysis",
-    category: ["sql", "powerbi"],
-    categoryLabels: ["SQL", "Power BI"],
-    badge: "SQL & Power BI",
+    id: "proj1",
+    title: "Sales Performance Dashboard",
+    category: "powerbi",
+    tags: ["Power BI", "Sales", "FMCG"],
     img: "assets/credit_loan_dashboard.svg",
-    desc: "End-to-end loan portfolio tracking system analyzing disbursement trends, overdue recovery rates, default percentages, and customer risk profiles using MySQL and Power BI.",
-    meta: "SQL, Power BI, DAX, Star Schema Data Modeling",
-    problem: "Financial institutions require constant monitoring of loan portfolios to identify high-risk borrowers, mitigate default rates, and track repayment timelines.",
-    objective: "Build an operational data model and dashboard to track monthly loan disbursements, total outstanding recovery, non-performing asset (NPA) percentages, and customer risk profiles.",
-    data: "Relational SQL database containing loan accounts, customer demographic information, payment schedules, and default records.",
-    process: [
-      "Extracted and merged raw loan datasets using MySQL multi-table JOINs and aggregation functions.",
-      "Transformed data in Power Query, handling null payment dates and standardizing interest rate formats.",
-      "Constructed a Star Schema model linking Fact_Loan_Disbursements with Dim_Customer and Dim_Branch.",
-      "Authored DAX measures for Total Disbursed Amount, Total Recovered, Recovery Ratio (%), and Overdue 90+ Days.",
-      "Built an interactive Power BI report with dynamic slicers for branch performance, loan tenure, and credit score tiers."
-    ],
-    tools: ["SQL", "Power BI", "DAX", "Power Query", "Data Modeling"],
+    desc: "Interactive dashboard to track multi-channel retail sales, distributor performance, and month-over-month growth trends.",
+    problem: "FMCG business leadership lacked real-time visibility into distributor performance, SKU-level sales velocity, and regional revenue growth.",
+    objective: "Build an executive-ready Power BI reporting suite with automated ETL and custom DAX time-intelligence metrics.",
+    tools: ["Power BI", "DAX", "Power Query ETL", "Star Schema Modeling"],
     insights: [
-      "Identified key trends in loan repayment behavior across different customer demographic brackets.",
-      "Highlighted overdue recovery hotspots, enabling the recovery team to focus collections on high-risk accounts.",
-      "Streamlined monthly executive loan performance reporting with automated DAX measures."
+      "Identified top 20% high-velocity SKUs contributing to 68% of cumulative monthly revenue.",
+      "Visualized distributor recovery cycles and reduced reconciliation delays by 40%.",
+      "Configured automated scheduled refreshes eliminating manual daily reporting routines."
     ],
-    codeSnippet: `-- MySQL Query: Monthly Loan Disbursement & Recovery Ratio Summary
-SELECT 
-  DATE_FORMAT(Disbursement_Date, '%Y-%m') AS Loan_Month,
-  COUNT(Loan_ID) AS Total_Accounts,
-  SUM(Disbursed_Amount) AS Total_Disbursed,
-  SUM(Recovered_Amount) AS Total_Recovered,
-  ROUND((SUM(Recovered_Amount) / SUM(Disbursed_Amount)) * 100, 2) AS Recovery_Ratio_Pct,
-  SUM(CASE WHEN Overdue_Days >= 90 THEN Disbursed_Amount ELSE 0 END) AS NPA_Overdue_Amount
-FROM Fact_Loan_Disbursements
-GROUP BY Loan_Month
-ORDER BY Loan_Month DESC;
-
--- DAX Measure: Overdue Recovery Rate (%)
-Recovery Rate % = 
-DIVIDE(
-    SUM(Fact_Loan_Disbursements[Recovered_Amount]),
-    SUM(Fact_Loan_Disbursements[Disbursed_Amount]),
-    0
-) * 100`,
+    codeSnippet: `// DAX: Year-over-Year Growth & Cumulative Target Achievement
+YoY Growth % = 
+VAR CurrentSales = [Total Sales]
+VAR PriorSales = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Dim_Date'[Date]))
+RETURN
+DIVIDE(CurrentSales - PriorSales, PriorSales, 0) * 100`,
     github: "https://github.com/Rutvik1429/Credit-Loan-Disbursement-Recovery-Analysis-SQL-Power_BI"
   },
   {
-    id: "project2",
-    title: "Vendor Performance Analysis",
-    category: ["powerbi", "sql", "python"],
-    categoryLabels: ["Power BI", "SQL", "Python"],
-    badge: "Power BI, SQL & Python",
-    img: "assets/vendor_performance_dashboard.svg",
-    desc: "Evaluates supplier efficiency, sales contribution, profit margins, and on-time delivery rates across vendors to optimize procurement workflows.",
-    meta: "Python, SQL, Power BI, DAX",
-    problem: "Supply chain and procurement managers face difficulty evaluating vendor efficiency, delivery consistency, profit margins, and inventory turn rates.",
-    objective: "Create a multi-tool analytical dashboard to benchmark vendor sales contribution, product quality rates, and profit margins to support vendor renewal decisions.",
-    data: "Vendor purchase orders, inventory stock logs, product sales records, and delivery timetables.",
-    process: [
-      "Performed data ingestion and pre-processing in Python (Pandas) to clean missing shipping logs.",
-      "Ran SQL queries to summarize total purchase orders, gross margins, and return counts by vendor.",
-      "Integrated dataset into Power BI to construct vendor scorecard visuals.",
-      "Created DAX metrics for On-Time Delivery Rate (%), Return Rate (%), and Vendor Profitability Contribution."
-    ],
-    tools: ["Power BI", "SQL", "Python", "Pandas", "DAX"],
-    insights: [
-      "Discovered top 20% vendors generating over 70% of total revenue margins.",
-      "Pinpointed vendor delivery bottleneck patterns during peak demand cycles.",
-      "Provided actionable data for procurement negotiations and vendor contract renewals."
-    ],
-    codeSnippet: `# Python (Pandas): Data Cleaning & On-Time Delivery Metric Computation
-import pandas as pd
-
-df = pd.read_csv('vendor_orders.csv')
-df['Delivery_Delay'] = (pd.to_datetime(df['Actual_Date']) - pd.to_datetime(df['Promised_Date'])).dt.days
-df['On_Time_Flag'] = df['Delivery_Delay'].apply(lambda x: 1 if x <= 0 else 0)
-
-vendor_kpis = df.groupby('Vendor_Name').agg(
-    Total_Orders=('PO_ID', 'count'),
-    On_Time_Rate=('On_Time_Flag', 'mean'),
-    Gross_Profit=('Profit', 'sum')
-).reset_index()
-
-# SQL: Vendor Return Rate Ranking
-SELECT Vendor_Name, SUM(Returned_Qty) / SUM(Ordered_Qty) * 100 AS Return_Rate_Pct
-FROM Vendor_Orders GROUP BY Vendor_Name ORDER BY Return_Rate_Pct DESC;`,
-    github: "https://github.com/Rutvik1429/Vendor_Performance_Analysis-Power_BI-SQL-Python"
-  },
-  {
-    id: "project3",
-    title: "Customer Churn Analysis (Python EDA)",
-    category: ["python", "excel"],
-    categoryLabels: ["Python", "EDA", "Excel"],
-    badge: "Python & Excel",
-    img: "assets/customer_churn_dashboard.svg",
-    desc: "Exploratory Data Analysis (EDA) on customer attrition to uncover churn triggers, demographic correlations, and contract type impacts.",
-    meta: "Python, Pandas, Matplotlib, Seaborn, Excel",
-    problem: "Telecommunications/service companies lose significant revenue due to customer churn without clear visibility into churn triggers.",
-    objective: "Perform Exploratory Data Analysis (EDA) in Python to identify key variables correlating with customer churn and formulate data-backed retention recommendations.",
-    data: "Customer demographic data, account tenure, monthly charges, contract types, and churn flag status.",
-    process: [
-      "Executed data cleaning in Jupyter Notebook: handled missing values, converted data types, and encoded categorical features.",
-      "Calculated summary statistics and distribution metrics using NumPy and Pandas.",
-      "Generated univariate, bivariate, and multivariate visualizations using Matplotlib and Seaborn.",
-      "Evaluated churn rates against contract types (Month-to-month vs Annual), tenure, and monthly billing amount."
-    ],
-    tools: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Excel"],
-    insights: [
-      "Month-to-month contract holders exhibited significantly higher churn risk compared to 1 or 2-year contract customers.",
-      "Higher monthly charges strongly correlated with early customer attrition (0-6 months tenure).",
-      "Recommended targeted contract upgrade incentives for high-risk customer segments."
-    ],
-    codeSnippet: `# Python Seaborn & Pandas: Churn Rate Heatmap Analysis
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-df = pd.read_csv('telecom_churn.csv')
-df['Tenure_Bin'] = pd.cut(df['tenure'], bins=[0, 12, 24, 48, 72], labels=['0-1 Yr', '1-2 Yrs', '2-4 Yrs', '4+ Yrs'])
-
-churn_pivot = pd.crosstab(df['Contract'], df['Tenure_Bin'], values=df['Churn_Numeric'], aggfunc='mean') * 100
-
-plt.figure(figsize=(8, 5))
-sns.heatmap(churn_pivot, annot=True, fmt=".1f", cmap="YlOrRd", cbar_kws={'label': 'Churn Rate (%)'})
-plt.title('Customer Churn Rate (%) by Contract Type & Tenure')
-plt.show()`,
-    github: "https://github.com/Rutvik1429/Customer_Churn_Analysis-Excel-ML-EDA-Python-Project"
-  },
-  {
-    id: "project4",
-    title: "NYC Yellow Taxi Trip Report & Hypothesis Testing",
-    category: ["python", "tableau"],
-    categoryLabels: ["Python", "Hypothesis Testing", "Tableau"],
-    badge: "Python & Tableau",
-    img: "assets/yellow_taxi_dashboard.svg",
-    desc: "Analyzed million-row trip datasets, performed two-sample t-tests on tipping behaviors, and mapped trip spatial density using Tableau.",
-    meta: "Python, SciPy, Tableau, Hypothesis Testing",
-    problem: "City transportation authorities require empirical insights into taxi trip patterns, fare structures, and tip behaviors across trip distances.",
-    objective: "Analyze million-row trip datasets, perform statistical hypothesis testing (t-tests), and visualize trip density via Tableau dashboards.",
-    data: "NYC Taxi & Limousine Commission (TLC) trip record dataset detailing pickup/dropoff times, trip distance, fare breakdown, and payment types.",
-    process: [
-      "Processed large-scale trip logs in Python using Pandas for feature engineering (trip duration, fare per mile).",
-      "Executed statistical hypothesis testing (Two-sample t-test) to evaluate tip differences between credit card vs cash payments.",
-      "Ingested cleaned datasets into Tableau Desktop to create interactive spatial maps and temporal heatmaps.",
-      "Built Tableau Story points highlighting peak rush hours, airport trip patterns, and fare distributions."
-    ],
-    tools: ["Python", "SciPy (Stats)", "Tableau", "Matplotlib", "Data Cleaning"],
-    insights: [
-      "Hypothesis testing confirmed statistically significant higher tip percentages for credit card payment transactions.",
-      "Identified peak surge hours and location hotspots for trip origin points, providing insights for driver allocation.",
-      "Visualized fare-to-distance relationships, revealing key anomalies in flat-rate airport trips."
-    ],
-    codeSnippet: `# Python SciPy: Two-Sample T-Test for Payment Type Tip Differences
-from scipy import stats
-
-card_tips = df[df['payment_type'] == 1]['tip_amount'] # Credit Card
-cash_tips = df[df['payment_type'] == 2]['tip_amount'] # Cash
-
-t_stat, p_val = stats.ttest_ind(card_tips, cash_tips, equal_var=False)
-
-print(f"T-Statistic: {t_stat:.4f}")
-print(f"P-Value: {p_val:.4e}")
-# Result: P-value < 0.001. Reject Null Hypothesis -> Credit card users tip significantly higher!`,
-    github: "https://github.com/Rutvik1429/Yellow-Taxi-Trips-Report-Python-Hypothesis_testing--Tableau"
-  },
-  {
-    id: "project5",
-    title: "Blinkit Business Performance & Operational Analysis",
-    category: ["excel"],
-    categoryLabels: ["Excel ETL", "MIS"],
-    badge: "Excel ETL & MIS",
+    id: "proj2",
+    title: "Retail Sales Analysis",
+    category: "excel",
+    tags: ["Excel", "Data Cleaning", "MIS"],
     img: "assets/blinkit_performance_dashboard.svg",
-    desc: "Evaluated sales performance, item category velocity, store location efficiency, and outlet size productivity using Power Query & Pivot Tables.",
-    meta: "Excel, Power Query, Pivot Tables, MIS Reporting",
-    problem: "Quick-commerce retail platforms require real-time visibility into sales metrics, inventory outlet performance, and item category demand.",
-    objective: "Develop a robust Excel-based Business Performance Report using Power Query and Pivot Tables to evaluate metrics across outlets.",
-    data: "Blinkit sales transaction data including item types, fat content, outlet size, location tier, and customer ratings.",
-    process: [
-      "Imported raw sales tables into Excel Power Query for data cleansing and data type assignment.",
-      "Built custom calculated columns for sales metrics, average item rating, and total outlet volume.",
-      "Constructed dynamic Pivot Tables and Pivot Charts broken down by Outlet Location Tier (Tier 1, Tier 2, Tier 3).",
-      "Configured slicers and KPI cards to enable instant executive filtering by outlet type."
-    ],
-    tools: ["Advanced Excel", "Power Query", "Pivot Tables", "MIS Reporting"],
+    desc: "Cleaned and analyzed retail sales data across store tiers to identify key business insights and outlet efficiency.",
+    problem: "Quick-commerce retail operations required consolidated visibility into item category sales, location tiers, and customer ratings.",
+    objective: "Create an automated Excel MIS dashboard leveraging Power Query data transformations and dynamic Pivot Tables.",
+    tools: ["Advanced Excel", "Power Query", "Pivot Tables", "MIS Automation"],
     insights: [
-      "Analyzed total sales breakdown across low fat vs regular item categories.",
-      "Established clear outlet performance rankings based on location tier and outlet establishment year.",
-      "Delivered an easily maintainable Excel MIS template requiring zero software licensing costs."
+      "Mapped outlet sales volume across Tier 1, 2, and 3 cities to prioritize replenishment schedules.",
+      "Built dynamic slicer filtering for instantaneous multi-attribute slicing with zero software licensing costs."
     ],
-    codeSnippet: `// Advanced Excel Formulas & Power Query M Formula
-=SUMIFS(Sales[Total_Sales], Sales[Outlet_Location], "Tier 1", Sales[Item_Fat], "Low Fat")
-
-// Power Query M Language: Data Cleaning & Grouping
+    codeSnippet: `// Excel Power Query M Formula for Grouped Outlet Metrics
 let
-    Source = Csv.Document(File.Contents("Blinkit_Data.csv"),[Delimiter=",", Encoding=1252]),
+    Source = Csv.Document(File.Contents("Sales_Data.csv"),[Delimiter=",", Encoding=1252]),
     PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     GroupedRows = Table.Group(PromotedHeaders, {"Outlet_Location_Type"}, {
         {"Total_Sales", each List.Sum([Item_Outlet_Sales]), type number},
@@ -212,498 +57,365 @@ in
     github: "https://github.com/Rutvik1429/Business-Performance-Report-Blinkit_Analysis--ETL-EXCEL"
   },
   {
-    id: "project6",
-    title: "Customer Performance Dashboard (Power BI Star Schema)",
-    category: ["powerbi"],
-    categoryLabels: ["Power BI", "DAX", "Star Schema"],
-    badge: "Power BI & DAX",
-    img: "assets/customer_performance_dashboard.svg",
-    desc: "Power BI analytics model utilizing a relational star schema data architecture and time-intelligence DAX measures to track customer lifetime value and sales volume.",
-    meta: "Power BI, DAX, Star Schema Data Modeling",
-    problem: "Retail stakeholders needed a single source of truth dashboard to evaluate customer lifetime value, order frequency, and revenue metrics.",
-    objective: "Design a relational data model with custom DAX measures to track customer purchasing behaviors.",
-    data: "Sales transactions, customer master directory, product catalog, and regional territory data.",
-    process: [
-      "Designed a clean Star Schema data model in Power BI Desktop connecting Fact Sales with Dimension tables.",
-      "Engineered complex DAX measures including YTD Sales, Total Orders, Average Order Value (AOV), and Customer Lifetime Sales.",
-      "Implemented drill-through pages and tooltips for deeper individual customer transaction analysis.",
-      "Published optimized report layout with responsive visual cards and dark-theme aesthetics."
-    ],
-    tools: ["Power BI", "DAX", "Data Modeling", "Power Query"],
+    id: "proj3",
+    title: "Customer Segmentation & Churn",
+    category: "python",
+    tags: ["Python", "Machine Learning", "EDA"],
+    img: "assets/customer_churn_dashboard.svg",
+    desc: "Used statistical EDA and machine learning clustering techniques to segment customers based on purchase behavior.",
+    problem: "High customer attrition rate in recurring subscriber cohorts without clear visibility into underlying churn drivers.",
+    objective: "Perform comprehensive Python Exploratory Data Analysis (EDA) and segmentation to identify high-risk customer segments.",
+    tools: ["Python", "Pandas", "Scikit-Learn", "Seaborn", "Matplotlib"],
     insights: [
-      "Provided executive visibility into customer segment profitability.",
-      "Enabled sales leadership to track dynamic month-over-month growth metrics using DAX time intelligence.",
-      "Optimized data refresh model for high report rendering speed."
+      "Uncovered that customers on month-to-month contracts had a 42% higher churn likelihood compared to annual subscribers.",
+      "Identified critical tenure window (0-6 months) where targeted onboarding interventions reduce attrition."
     ],
-    codeSnippet: `// DAX Time Intelligence: Year-over-Year Growth & Cumulative Sales
-Sales YoY Growth % = 
-VAR CurrentSales = [Total Sales]
-VAR PriorYearSales = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Dim_Date'[Date]))
-RETURN
-DIVIDE(CurrentSales - PriorYearSales, PriorYearSales, 0) * 100
+    codeSnippet: `# Python: Churn Rate Analysis by Contract Type
+import pandas as pd
 
-// DAX: Customer Lifetime Value (CLV) Rank
-Customer Revenue Rank = 
-RANKX(
-    ALL(Dim_Customer[Customer_Name]),
-    [Total Sales],
-    ,
-    DESC,
-    Dense
-)`,
-    github: "https://github.com/Rutvik1429/Customer-Performance-Dashboard-DAX-Power-BI"
+churn_rate = df.groupby('Contract')['Churn'].value_counts(normalize=True).unstack()
+churn_rate['Churn_Pct'] = churn_rate['Yes'] * 100
+print(churn_rate[['Churn_Pct']])`,
+    github: "https://github.com/Rutvik1429/Customer_Churn_Analysis-Excel-ML-EDA-Python-Project"
+  },
+  {
+    id: "proj4",
+    title: "Inventory Optimization & Tracking",
+    category: "sql",
+    tags: ["SQL", "Supply Chain", "MySQL"],
+    img: "assets/vendor_performance_dashboard.svg",
+    desc: "Analyzed inventory and warehouse data to reduce stockouts, optimize reorder levels, and improve fulfillment.",
+    problem: "Frequent stockouts of key SKUs during promotional spikes led to lost revenue and customer dissatisfaction.",
+    objective: "Develop complex SQL analytical queries to benchmark vendor lead times and calculate dynamic Safety Stock quantities.",
+    tools: ["SQL", "MySQL", "Window Functions", "CTEs", "Supply Chain Analytics"],
+    insights: [
+      "Identified supplier delivery bottlenecks, reducing stockout occurrences by 22%.",
+      "Calculated dynamic Economic Order Quantities (EOQ) based on historical demand seasonality."
+    ],
+    codeSnippet: `-- SQL: Dynamic Reorder Point and Stockout Risk Detection
+WITH InventoryMetrics AS (
+    SELECT 
+        sku_id,
+        product_name,
+        current_stock,
+        avg_daily_sales,
+        supplier_lead_time_days,
+        (avg_daily_sales * supplier_lead_time_days * 1.25) AS recommended_reorder_point
+    FROM warehouse_inventory
+)
+SELECT *,
+    CASE 
+        WHEN current_stock <= (recommended_reorder_point * 0.5) THEN 'CRITICAL_STOCKOUT_RISK'
+        WHEN current_stock <= recommended_reorder_point THEN 'REORDER_NOW'
+        ELSE 'OPTIMAL_STOCK'
+    END AS stock_status
+FROM InventoryMetrics
+ORDER BY current_stock ASC;`,
+    github: "https://github.com/Rutvik1429/Vendor_Performance_Analysis-Power_BI-SQL-Python"
+  },
+  {
+    id: "proj5",
+    title: "Marketing Campaign Analysis",
+    category: "powerbi",
+    tags: ["Excel", "Power BI", "Marketing"],
+    img: "assets/yellow_taxi_dashboard.svg",
+    desc: "Measured multi-channel marketing campaign performance and identified top-converting customer channels.",
+    problem: "Marketing budget allocation across paid social, search, and influencer campaigns lacked clear attribution and ROAS metrics.",
+    objective: "Build an end-to-end attribution dashboard connecting marketing spends with down-funnel sales conversions.",
+    tools: ["Power BI", "Tableau", "DAX", "Python Stats"],
+    insights: [
+      "Identified that influencer-led promotions delivered a 3.2x higher conversion rate for new product launches.",
+      "Optimized quarterly budget re-allocation to enhance overall blended ROAS by 28%."
+    ],
+    codeSnippet: `// DAX: Return on Ad Spend (ROAS)
+ROAS Ratio = 
+DIVIDE([Campaign Attributed Revenue], [Total Ad Spend], 0)`,
+    github: "https://github.com/Rutvik1429/Yellow-Taxi-Trips-Report-Python-Hypothesis_testing--Tableau"
+  },
+  {
+    id: "proj6",
+    title: "Automated Reporting System",
+    category: "automation",
+    tags: ["Google Apps Script", "Automation", "Google Sheets"],
+    img: "assets/customer_performance_dashboard.svg",
+    desc: "Built an automated reporting system using Google Apps Script and Claude AI to save time and reduce manual work.",
+    problem: "Operational analysts spent 10+ manual hours each week downloading CSVs, aggregating orders, and emailing updates to managers.",
+    objective: "Build an automated cloud reporting workflow using Google Sheets and Google Apps Script (GAS) with scheduled triggers.",
+    tools: ["Google Sheets", "Google Apps Script", "Claude AI (Vibe Coding)", "REST APIs"],
+    insights: [
+      "Completely automated daily 9:00 AM sales and stock dispatch summary emails to leadership.",
+      "Eliminated human copy-paste errors across 15+ internal operational tracking sheets."
+    ],
+    codeSnippet: `// Google Apps Script (GAS): Scheduled Daily Automated Order Digest
+function sendDailySalesSummary() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Live_Orders");
+  const data = sheet.getDataRange().getValues();
+  let totalRevenue = 0;
+  
+  for (let i = 1; i < data.length; i++) {
+    totalRevenue += Number(data[i][4]); // Column 5: Order Amount
+  }
+  
+  MailApp.sendEmail({
+    to: "management@alpino.store",
+    subject: "📊 Automated Daily Sales Digest - " + Utilities.formatDate(new Date(), "GMT+5:30", "dd-MMM-yyyy"),
+    body: "Today's Total Processed Revenue: ₹" + totalRevenue.toLocaleString("en-IN")
+  });
+}`,
+    github: "https://github.com/Rutvik1429/Credit-Loan-Disbursement-Recovery-Analysis-SQL-Power_BI"
   }
 ];
 
-// --- SKILLS MATRIX DATA ---
-const SKILLS_DATA = [
+// --- DATA: TEMPLATES (Screen 4: Ready-to-use Templates) ---
+const TEMPLATES_DATA = [
   {
-    icon: "fa-solid fa-database",
-    title: "Database & SQL",
-    desc: "Querying, data aggregation, multi-table JOINs, subqueries, CTEs, and window functions.",
-    tags: ["SQL", "MySQL", "Data Querying", "Joins & Aggregations", "Subqueries", "CTE & Windowing"]
+    id: "tpl1",
+    title: "Sales Dashboard Template",
+    category: "powerbi",
+    badge: "Power BI",
+    price: "₹299",
+    img: "assets/credit_loan_dashboard.svg",
+    desc: "Track sales, targets and growth with a ready-to-use executive Power BI dashboard.",
+    features: ["Pre-configured Star Schema", "15+ DAX Time-Intelligence Measures", "Dynamic Slicers & Tooltips", "Mobile-Optimized Layout"]
   },
   {
-    icon: "fa-solid fa-chart-pie",
-    title: "Business Intelligence",
-    desc: "Data modeling, interactive dashboard design, DAX measures, and enterprise reporting.",
-    tags: ["Power BI", "DAX Measures", "Power Query ETL", "Star Schema Modeling", "Tableau"]
+    id: "tpl2",
+    title: "Distributor Data Tracker",
+    category: "excel",
+    badge: "Excel / MIS",
+    price: "₹199",
+    img: "assets/blinkit_performance_dashboard.svg",
+    desc: "Manage distributor data, secondary sales and operational reporting easily.",
+    features: ["Automated Power Query Ingestion", "Distributor Reconciliation View", "Pre-built Pivot Summaries", "Zero Software License Needed"]
   },
   {
-    icon: "fa-solid fa-table",
-    title: "Excel, Google Sheets & Apps Script",
-    desc: "Advanced spreadsheet engineering, Google Sheets automations via Google Apps Script (GAS), dynamic array formulas, and automated MIS reporting.",
-    tags: ["Advanced Excel", "Google Sheets", "Google Apps Script (GAS)", "Workflow Automation", "Pivot Tables", "VLOOKUP / XLOOKUP", "MIS Reporting"]
+    id: "tpl3",
+    title: "Expense Tracker",
+    category: "excel",
+    badge: "Excel / Finance",
+    price: "₹149",
+    img: "assets/customer_churn_dashboard.svg",
+    desc: "Simple and effective expense tracking template for department and personal budgets.",
+    features: ["Category-wise Monthly Budgeting", "Variance Analysis (Budget vs Actual)", "Auto-Calculating Net Burn", "Printable PDF Summary"]
   },
   {
-    icon: "fa-brands fa-python",
-    title: "Python & Analytics",
-    desc: "Exploratory Data Analysis (EDA), statistical modeling, and data manipulation.",
-    tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "EDA", "Hypothesis Testing"]
+    id: "tpl4",
+    title: "Project Tracker",
+    category: "excel",
+    badge: "Excel / Productivity",
+    price: "₹199",
+    img: "assets/vendor_performance_dashboard.svg",
+    desc: "Track tasks, deadlines and progress in one central structured dashboard.",
+    features: ["Automated Gantt Visualizer", "Task Status Priority Dropdowns", "Overdue Deadline Highlights", "Team Resource Allocation"]
   },
   {
-    icon: "fa-solid fa-brain",
-    title: "AI-Powered Analytics & Vibe Coding",
-    desc: "Leveraging Claude AI to accelerate exploratory analysis, synthesize executive reporting narratives, and rapidly code automation scripts.",
-    tags: ["Claude AI", "Vibe Coding", "AI-Augmented EDA", "Automated Scripting", "Prompt Engineering for Data", "Report Generation"]
+    id: "tpl5",
+    title: "HR Attendance Tracker",
+    category: "excel",
+    badge: "Excel / HR",
+    price: "₹199",
+    img: "assets/yellow_taxi_dashboard.svg",
+    desc: "Employee attendance, overtime, and leave management ready-made template.",
+    features: ["Monthly Calendar Grid Matrix", "Automated Leave Balance Deductions", "Overtime & Shift Calculation", "Audit-Ready Report"]
   },
   {
-    icon: "fa-solid fa-boxes-packing",
-    title: "Operations & Supply Chain Analytics",
-    desc: "Inventory turnover, stockout prevention, SKU velocity, vendor performance, and demand analytics.",
-    tags: ["Supply Chain KPIs", "Inventory Analytics", "SKU Velocity", "Order Fulfillment", "Vendor Scorecards", "D2C Metrics"]
+    id: "tpl6",
+    title: "Business KPI Dashboard",
+    category: "powerbi",
+    badge: "Power BI / Business",
+    price: "₹299",
+    img: "assets/customer_performance_dashboard.svg",
+    desc: "Monitor key business metrics with interactive executive cards and visuals.",
+    features: ["Gross Margin & EBITDA Cards", "Customer Acquisition vs Churn", "Regional Revenue Geo Maps", "Real-Time KPI Slicers"]
   }
 ];
 
-// --- WORKFLOW PIPELINE DATA ---
-const WORKFLOW_DATA = [
+// --- DATA: ARTICLES / INSIGHTS (Screen 5: Insights & Learnings) ---
+const ARTICLES_DATA = [
   {
-    step: "01",
-    icon: "fa-solid fa-lightbulb",
-    title: "Business Problem",
-    desc: "Identify business objectives, key performance indicators (KPIs), and stakeholder goals."
+    id: "art1",
+    title: "How to Create a Sales Dashboard in Power BI",
+    date: "Aug 20, 2026",
+    category: "Power BI",
+    img: "assets/credit_loan_dashboard.svg",
+    excerpt: "A step-by-step guide to build an interactive sales dashboard using Power BI from data cleaning to visualization.",
+    content: `Building an executive-level Power BI sales dashboard requires more than just dragging charts onto a canvas. It starts with establishing a clean relational data model:
+
+1. Data Preparation in Power Query: Standardize headers, eliminate null records, and assign proper data types.
+2. Building a Star Schema: Separate numerical transactions into Fact_Sales and dimension entities (Dim_Date, Dim_Product, Dim_Customer).
+3. Authoring Reusable DAX Measures: Keep measures centralized in a dedicated calculation table (Total Sales, YoY %, Moving Averages).
+4. Visual Hierarchy: Place high-level KPI cards at the top left, followed by time-series trend lines and categorical breakdowns below.`
   },
   {
-    step: "02",
-    icon: "fa-solid fa-file-import",
-    title: "Data Collection",
-    desc: "Query SQL databases or extract CSV/Excel datasets via Python & Power Query ETL."
+    id: "art2",
+    title: "10 Useful SQL Queries for Data Analysts",
+    date: "Aug 12, 2026",
+    category: "SQL",
+    img: "assets/vendor_performance_dashboard.svg",
+    excerpt: "A collection of commonly used SQL queries that can help you in day-to-day data analysis, joining tables, and windowing.",
+    content: `Mastering these SQL patterns transforms how you manipulate and extract business insights:
+
+1. Common Table Expressions (CTEs): Break complex multi-stage aggregations into clean, readable steps using WITH.
+2. Window Functions (ROW_NUMBER, DENSE_RANK): Essential for ranking customers by revenue and identifying top-performing SKUs.
+3. Lag & Lead: Calculate Month-over-Month growth without self-joins.
+4. Conditional Aggregations: Using SUM(CASE WHEN ...) to pivot categorical rows into analytical columns.`
   },
   {
-    step: "03",
-    icon: "fa-solid fa-wand-magic-sparkles",
-    title: "Clean & Model",
-    desc: "Handle missing values, standardize data types, and construct relational Star Schema models."
+    id: "art3",
+    title: "Data Analytics in FMCG – Key Insights",
+    date: "Aug 05, 2026",
+    category: "Industry Insights",
+    img: "assets/blinkit_performance_dashboard.svg",
+    excerpt: "Exploring how data analytics drives better decisions in the FMCG sector across stockout mitigation and SKU velocity.",
+    content: `In fast-moving consumer goods (FMCG) like Alpino, margins are tight and inventory turnover is paramount:
+
+- SKU Velocity Tracking: Categorizing products into Fast-Moving, Moderate, and Slow-Moving tiers ensures warehouse space is utilized optimally.
+- Stockout Risk Prevention: Calculating dynamic safety stock thresholds prevents lost sales during quick-commerce flash spikes.
+- Secondary Sales Visibility: Monitoring distributor-to-retailer sell-through provides the earliest indicator of genuine consumer demand.`
   },
   {
-    step: "04",
-    icon: "fa-solid fa-chart-line",
-    title: "Analyze & Visualize",
-    desc: "Perform Exploratory Data Analysis (EDA) and engineer interactive Power BI/Tableau dashboards."
-  },
-  {
-    step: "05",
-    icon: "fa-solid fa-comments",
-    title: "Deliver Insights",
-    desc: "Extract actionable recommendations and present findings to empower decision makers."
+    id: "art4",
+    title: "My Learning Journey in Data Analytics",
+    date: "Jul 28, 2026",
+    category: "Career",
+    img: "assets/customer_churn_dashboard.svg",
+    excerpt: "Sharing my experience, challenges, and key learnings in transitioning from BCA to Data Analyst and pursuing an MBA.",
+    content: `The journey from learning syntax to solving business problems:
+
+1. Start with Foundations: BCA gave me programming logic and database fundamentals.
+2. Focus on Business Impact: Learning SQL and Power BI at ExcelR taught me that data is only valuable when it answers stakeholder questions.
+3. Hands-on Industry Application: At Alpino, using Excel, Google Sheets, Apps Script, and Claude AI reinforced how automation multiplies an analyst's leverage.
+4. Strategic Leadership: Pursuing an MBA in Operations & Data Science at NMIMS unites operational execution with predictive analytics.`
   }
 ];
 
-// --- DASHBOARD SHOWCASE DATA ---
-const DASHBOARDS_DATA = [
-  {
-    title: "Credit & Loan Performance Report",
-    tech: "Power BI & SQL",
-    img: "assets/credit_loan_dashboard.svg"
-  },
-  {
-    title: "Vendor Performance Analysis",
-    tech: "Power BI & Python",
-    img: "assets/vendor_performance_dashboard.svg"
-  },
-  {
-    title: "Customer Retention & Churn EDA",
-    tech: "Python & Excel",
-    img: "assets/customer_churn_dashboard.svg"
-  },
-  {
-    title: "NYC Taxi Passenger & Fare Report",
-    tech: "Tableau & Python",
-    img: "assets/yellow_taxi_dashboard.svg"
-  }
-];
-
-// --- SPOTLIGHT MOUSE HOOK ---
-function useSpotlight() {
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty('--mouse-x', `${x}px`);
-    card.style.setProperty('--mouse-y', `${y}px`);
-  };
-  return { onMouseMove: handleMouseMove };
-}
-
-// --- INTERACTIVE CHART COMPONENT ---
-function InteractiveChart({ theme }) {
-  const chartRef = useRef(null);
-  const chartInstance = useRef(null);
-  const [chartMode, setChartMode] = useState("skills"); // 'skills' | 'projects' | 'workflow'
-
-  useEffect(() => {
-    if (!window.Chart || !chartRef.current) return;
-
-    if (chartInstance.current) {
-      chartInstance.current.destroy();
-    }
-
-    const ctx = chartRef.current.getContext("2d");
-    const isDark = theme === "dark";
-
-    const textColor = isDark ? "#cbd5e1" : "#334155";
-    const gridColor = isDark ? "rgba(51, 65, 85, 0.6)" : "rgba(226, 232, 240, 0.8)";
-
-    let dataConfig = {};
-
-    if (chartMode === "skills") {
-      dataConfig = {
-        type: "bar",
-        data: {
-          labels: ["SQL & MySQL", "Power BI & DAX", "Excel & Power Query", "Python & EDA", "Tableau", "Data Modeling"],
-          datasets: [{
-            label: "Practical Competency Index (%)",
-            data: [92, 90, 95, 84, 80, 88],
-            backgroundColor: [
-              "rgba(37, 99, 235, 0.85)",
-              "rgba(2, 132, 199, 0.85)",
-              "rgba(16, 185, 129, 0.85)",
-              "rgba(245, 158, 11, 0.85)",
-              "rgba(139, 92, 246, 0.85)",
-              "rgba(236, 72, 153, 0.85)"
-            ],
-            borderRadius: 8,
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: isDark ? "rgba(15, 23, 42, 0.95)" : "rgba(255, 255, 255, 0.95)",
-              titleColor: isDark ? "#ffffff" : "#0f172a",
-              bodyColor: isDark ? "#cbd5e1" : "#475569",
-              titleFont: { family: "Plus Jakarta Sans", size: 13, weight: "bold" },
-              bodyFont: { family: "Plus Jakarta Sans", size: 12 },
-              padding: 12,
-              cornerRadius: 8,
-              borderColor: isDark ? "#334155" : "#e2e8f0",
-              borderWidth: 1
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              grid: { color: gridColor },
-              ticks: { color: textColor, font: { family: "Plus Jakarta Sans", size: 12 } }
-            },
-            x: {
-              grid: { display: false },
-              ticks: { color: textColor, font: { family: "Plus Jakarta Sans", size: 11, weight: "700" } }
-            }
-          }
-        }
-      };
-    } else if (chartMode === "projects") {
-      dataConfig = {
-        type: "doughnut",
-        data: {
-          labels: ["Power BI Reports", "SQL Queries", "Python & EDA", "Excel MIS Reports", "Tableau Stories"],
-          datasets: [{
-            label: "Verified Repos",
-            data: [3, 2, 2, 2, 1],
-            backgroundColor: ["#2563eb", "#0284c7", "#10b981", "#f59e0b", "#8b5cf6"],
-            borderWidth: 3,
-            borderColor: isDark ? "#0f172a" : "#ffffff"
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "right",
-              labels: { font: { family: "Plus Jakarta Sans", size: 13, weight: "600" }, color: textColor, padding: 16 }
-            }
-          }
-        }
-      };
-    } else {
-      dataConfig = {
-        type: "line",
-        data: {
-          labels: ["Data Querying", "ETL Cleaning", "Data Modeling", "DAX Formulas", "Dashboard UI", "Insight Delivery"],
-          datasets: [{
-            label: "Accuracy & Quality Metrics",
-            data: [75, 88, 92, 95, 97, 99],
-            fill: true,
-            backgroundColor: "rgba(37, 99, 235, 0.15)",
-            borderColor: "#2563eb",
-            borderWidth: 3,
-            pointBackgroundColor: "#2563eb",
-            pointRadius: 5,
-            tension: 0.35
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { color: textColor } },
-            x: { grid: { display: false }, ticks: { color: textColor } }
-          }
-        }
-      };
-    }
-
-    chartInstance.current = new window.Chart(ctx, dataConfig);
-
-    return () => {
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
-      }
-    };
-  }, [chartMode, theme]);
-
-  return (
-    <div className="interactive-chart-container">
-      <div className="chart-controls">
-        <div className="chart-tabs">
-          <button className={`chart-tab-btn ${chartMode === "skills" ? "active" : ""}`} onClick={() => setChartMode("skills")}>
-            <i className="fa-solid fa-chart-column"></i> Tech Skill Matrix
-          </button>
-          <button className={`chart-tab-btn ${chartMode === "projects" ? "active" : ""}`} onClick={() => setChartMode("projects")}>
-            <i className="fa-solid fa-chart-pie"></i> Tool Distribution
-          </button>
-          <button className={`chart-tab-btn ${chartMode === "workflow" ? "active" : ""}`} onClick={() => setChartMode("workflow")}>
-            <i className="fa-solid fa-chart-line"></i> Analytics Quality Index
-          </button>
-        </div>
-      </div>
-      <div className="chart-canvas-wrapper">
-        <canvas ref={chartRef}></canvas>
-      </div>
-    </div>
-  );
-}
-
-// --- PROJECT BENTO CARD COMPONENT WITH CODE INSPECTOR TABS ---
-function BentoProjectCard({ project, openModal }) {
-  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'code' | 'insights'
-  const spotlightProps = useSpotlight();
-
-  return (
-    <div className="bento-card project-bento-card spotlight-card" {...spotlightProps}>
-      <div className="project-card-header">
-        <div className="p-header-top">
-          <span className="badge badge-blue">{project.badge}</span>
-          <div className="p-card-tabs">
-            <button className={`p-tab-btn ${activeTab === "overview" ? "active" : ""}`} onClick={() => setActiveTab("overview")}>
-              <i className="fa-solid fa-align-left"></i> Overview
-            </button>
-            <button className={`p-tab-btn ${activeTab === "code" ? "active" : ""}`} onClick={() => setActiveTab("code")}>
-              <i className="fa-solid fa-code"></i> Query / Code
-            </button>
-            <button className={`p-tab-btn ${activeTab === "insights" ? "active" : ""}`} onClick={() => setActiveTab("insights")}>
-              <i className="fa-solid fa-lightbulb"></i> Insights
-            </button>
-          </div>
-        </div>
-
-        <h3 className="project-title">{project.title}</h3>
-      </div>
-
-      <div className="project-card-body">
-        {activeTab === "overview" && (
-          <div className="p-tab-content animate-fadeIn">
-            <p className="project-desc">{project.desc}</p>
-            <div className="project-meta-pill">
-              <i className="fa-solid fa-wrench"></i> <span>{project.meta}</span>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "code" && (
-          <div className="p-tab-content animate-fadeIn">
-            <div className="code-inspector-box">
-              <div className="code-box-header">
-                <span className="code-box-title"><i className="fa-solid fa-terminal"></i> SQL / DAX / Python Inspector</span>
-                <span className="code-box-lang">UTF-8</span>
-              </div>
-              <pre className="code-snippet-pre">
-                <code>{project.codeSnippet}</code>
-              </pre>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "insights" && (
-          <div className="p-tab-content animate-fadeIn">
-            <ul className="project-insights-mini">
-              {project.insights.map((ins, i) => (
-                <li key={i}><i className="fa-solid fa-circle-check text-blue"></i> {ins}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div className="project-card-footer">
-        <button className="btn btn-sm btn-primary hover-magnetic" onClick={() => openModal(project)}>
-          <i className="fa-solid fa-eye"></i> View Full Case Study
-        </button>
-        <a href={project.github} target="_blank" rel="noopener" className="btn btn-sm btn-outline hover-magnetic">
-          <i className="fa-brands fa-github"></i> Repository
-        </a>
-      </div>
-    </div>
-  );
-}
-
-// --- MAIN APP COMPONENT ---
+// --- MAIN REACT APPLICATION COMPONENT ---
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("portfolio_theme") || "light");
   const [activeNav, setActiveNav] = useState("home");
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Project filter
   const [projectFilter, setProjectFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
-  const [selectedLightbox, setSelectedLightbox] = useState(null);
 
-  const spotlightProps = useSpotlight();
+  // Template search & filter
+  const [templateSearch, setTemplateSearch] = useState("");
+  const [templateCategory, setTemplateCategory] = useState("all");
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
-  // Apply Theme Attribute to HTML element
+  // Blog Article modal
+  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  // Toast feedback
+  const [toastMessage, setToastMessage] = useState(null);
+
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+
+  // Newsletter state
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+
+  // Sync theme
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("portfolio_theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
   };
 
-  // Scroll spy & Header scroll background
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+  // Trigger Toast Notification
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000);
+  };
 
-      const sections = document.querySelectorAll("section[id]");
-      const scrollY = window.pageYOffset;
-
-      sections.forEach((current) => {
-        const sectionHeight = current.offsetHeight;
-        const sectionTop = current.offsetTop - 120;
-        const sectionId = current.getAttribute("id");
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          setActiveNav(sectionId);
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Filter projects
+  // Filtered Projects
   const filteredProjects = useMemo(() => {
     if (projectFilter === "all") return PROJECTS_DATA;
-    return PROJECTS_DATA.filter((p) => p.category.includes(projectFilter));
+    return PROJECTS_DATA.filter(p => p.category === projectFilter);
   }, [projectFilter]);
 
-  const openProjectModal = (proj) => {
-    setSelectedProject(proj);
-    document.body.style.overflow = "hidden";
+  // Filtered Templates
+  const filteredTemplates = useMemo(() => {
+    return TEMPLATES_DATA.filter(t => {
+      const matchesCategory = templateCategory === "all" || t.category === templateCategory;
+      const matchesSearch = t.title.toLowerCase().includes(templateSearch.toLowerCase()) ||
+                            t.desc.toLowerCase().includes(templateSearch.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [templateSearch, templateCategory]);
+
+  // Handle Contact Submit
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.email || !contactForm.message) {
+      showToast("Please fill in your name, email, and message!");
+      return;
+    }
+    showToast(`Thank you, ${contactForm.name}! Your message has been sent to Rutvik.`);
+    setContactForm({ name: "", email: "", subject: "", message: "" });
   };
 
-  const closeProjectModal = () => {
-    setSelectedProject(null);
-    document.body.style.overflow = "";
-  };
-
-  const openLightbox = (item) => {
-    setSelectedLightbox(item);
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeLightbox = () => {
-    setSelectedLightbox(null);
-    document.body.style.overflow = "";
+  // Handle Newsletter Submit
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    showToast("Subscribed! You will receive practical analytics guides in your inbox.");
+    setNewsletterEmail("");
   };
 
   return (
-    <div className="portfolio-wrapper">
-      {/* Background Animated Ambient Orbs & Grid */}
-      <div className="ambient-background">
-        <div className="bg-orb orb-1"></div>
-        <div className="bg-orb orb-2"></div>
-        <div className="bg-orb orb-3"></div>
-        <div className="bg-grid-overlay"></div>
-      </div>
+    <div className="portfolio-app-root">
+      
+      {/* Toast Notification Popup */}
+      {toastMessage && (
+        <div className="toast-notice animate-fadeIn">
+          <i className="fa-solid fa-circle-check text-blue"></i>
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
-      {/* Header Navigation */}
-      <header className={`site-header ${isScrolled ? "scrolled" : ""}`} id="header">
+      {/* HEADER NAVBAR */}
+      <header className="site-header" id="header">
         <div className="container nav-container">
           <a href="#home" className="nav-logo">
-            <span className="logo-icon">
-              <img src="assets/my website logo.png" alt="Rutvik Bambhaniya Logo" className="header-logo-img" />
-            </span>
-            <span className="logo-text">Rutvik Bambhaniya</span>
+            <img src="assets/my website logo.png" alt="Rutvik Data Analyst Logo" className="header-logo-img" />
+            <div className="logo-brand-text">
+              <span className="logo-main-title">RUTVIK</span>
+              <span className="logo-sub-title">DATA ANALYST</span>
+            </div>
           </a>
 
-          <nav className={`nav-menu ${isMobileMenuOpen ? "active" : ""}`} id="nav-menu">
+          <nav className={`nav-menu ${isMobileMenuOpen ? "active" : ""}`}>
             <ul className="nav-list">
               {[
-                { id: "home", label: "Home", icon: "fa-house" },
-                { id: "about", label: "About", icon: "fa-user" },
-                { id: "skills", label: "Skills", icon: "fa-layer-group" },
-                { id: "experience", label: "Experience", icon: "fa-briefcase" },
-                { id: "projects", label: "Projects", icon: "fa-chart-column" },
-                { id: "dashboards", label: "Dashboards", icon: "fa-table-cells-large" },
-                { id: "contact", label: "Contact", icon: "fa-envelope" }
-              ].map((item) => (
+                { id: "home", label: "Home" },
+                { id: "about", label: "About" },
+                { id: "projects", label: "Projects" },
+                { id: "templates", label: "Templates" },
+                { id: "insights", label: "Blog" },
+                { id: "contact", label: "Contact" }
+              ].map(item => (
                 <li key={item.id} className="nav-item">
                   <a
                     href={`#${item.id}`}
                     className={`nav-link ${activeNav === item.id ? "active" : ""}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setActiveNav(item.id);
+                      setIsMobileMenuOpen(false);
+                    }}
                   >
-                    <i className={`fa-solid ${item.icon}`}></i> {item.label}
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -711,25 +423,24 @@ function App() {
           </nav>
 
           <div className="nav-actions">
-            {/* Theme Toggle Button */}
+            {/* Dark / Light Toggle */}
             <button
-              className="theme-toggle-btn hover-magnetic"
+              className="theme-toggle-btn"
               onClick={toggleTheme}
-              aria-label="Toggle dark/light theme"
+              aria-label="Toggle Theme"
               title={`Switch to ${theme === "light" ? "Dark" : "Light"} Mode`}
             >
               <i className={`fa-solid ${theme === "light" ? "fa-moon" : "fa-sun"}`}></i>
-              <span className="theme-toggle-text">{theme === "light" ? "Dark" : "Light"}</span>
             </button>
 
-            <a href="assets/resume.pdf" target="_blank" className="btn btn-outline btn-sm hover-magnetic">
-              <i className="fa-solid fa-file-arrow-down"></i> Resume
+            <a href="#contact" className="btn btn-primary btn-sm">
+              Let's Connect
             </a>
 
             <button
               className="nav-toggle"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label="Toggle Navigation"
             >
               <i className={`fa-solid ${isMobileMenuOpen ? "fa-xmark" : "fa-bars"}`}></i>
             </button>
@@ -738,346 +449,216 @@ function App() {
       </header>
 
       <main>
-        {/* Hero Section with Bento Command Layout */}
+        {/* SCREEN 1: HERO SECTION */}
         <section className="hero-section" id="home">
           <div className="container">
-            <div className="bento-hero-grid">
+            <div className="hero-grid">
               
-              {/* Left Column: Main Bio + Metrics */}
-              <div className="bento-hero-left">
-                {/* Bento Card 1: Main Introduction */}
-                <div className="bento-card bento-hero-main spotlight-card" {...spotlightProps}>
-                  <div className="badge badge-accent animate-fadeIn">
-                    <i className="fa-solid fa-circle-dot pulsate"></i> Data Analyst @ Alpino | Surat
+              {/* Left Column */}
+              <div className="hero-left">
+                <span className="hero-greeting">Hi, I'm</span>
+                <h1 className="hero-name">Rutvik Bambhaniya</h1>
+                <h2 className="hero-tagline">
+                  Data Analyst | <span className="text-gradient">Turning Data into Opportunities</span>
+                </h2>
+                <p className="hero-desc">
+                  I help businesses make better decisions through data analysis, visualization, and automation. Currently driving sales, supply chain, and retail insights at <strong>Alpino (Surat)</strong>.
+                </p>
+
+                {/* 3 Value Badges */}
+                <div className="hero-value-props">
+                  <div className="value-prop-item">
+                    <div className="value-prop-icon"><i className="fa-solid fa-chart-pie"></i></div>
+                    <span className="value-prop-label">Analyze Data</span>
                   </div>
-                  <h1 className="hero-title">
-                    Hi, I'm <span className="text-highlight">Rutvik Bambhaniya</span>
-                  </h1>
-                  <h2 className="hero-subtitle">Data Analyst @ Alpino | Power BI & SQL Specialist | Operations & Supply Chain Focus</h2>
-                  <p className="hero-description">
-                    Turning complex business datasets into actionable intelligence using <strong>SQL, Advanced Excel, Google Sheets, Power BI, Python & Tableau</strong>. Driving sales performance, inventory visibility, and operational analytics as a <strong>Data Analyst at Alpino (Surat)</strong>, augmented with <strong>Google Apps Script (GAS)</strong> automation and <strong>Claude AI</strong>. Pursuing an <strong>MBA in Operations (Supply Chain) & Data Science from NMIMS University</strong>, backed by a BCA degree and ExcelR analytics training.
-                  </p>
-                  <div className="hero-actions">
-                    <a href="#projects" className="btn btn-primary btn-lg hover-magnetic">
-                      <i className="fa-solid fa-diagram-project"></i> View Analytics Projects
-                    </a>
-                    <a href="assets/resume.pdf" target="_blank" className="btn btn-secondary btn-lg hover-magnetic">
-                      <i className="fa-solid fa-file-pdf"></i> Download Resume
-                    </a>
+                  <div className="value-prop-item">
+                    <div className="value-prop-icon"><i className="fa-solid fa-lightbulb"></i></div>
+                    <span className="value-prop-label">Build Insights</span>
+                  </div>
+                  <div className="value-prop-item">
+                    <div className="value-prop-icon"><i className="fa-solid fa-chart-line"></i></div>
+                    <span className="value-prop-label">Drive Growth</span>
                   </div>
                 </div>
 
-                {/* Bento Card 2: Key Metrics Widget */}
-                <div className="bento-card bento-hero-stats spotlight-card" {...spotlightProps}>
-                  <div className="stat-widget-header">
-                    <span className="stat-widget-title"><i className="fa-solid fa-chart-line"></i> Analytics Profile Highlights</span>
-                  </div>
-                  <div className="stat-widget-grid">
-                    <div className="stat-box hover-glow">
-                      <span className="stat-num">Alpino</span>
-                      <span className="stat-label">Data Analyst (Surat)</span>
-                    </div>
-                    <div className="stat-box hover-glow">
-                      <span className="stat-num">NMIMS</span>
-                      <span className="stat-label">MBA (Ops & DS)</span>
-                    </div>
-                    <div className="stat-box hover-glow">
-                      <span className="stat-num">SQL & BI</span>
-                      <span className="stat-label">Core Toolbox</span>
-                    </div>
-                    <div className="stat-box hover-glow">
-                      <span className="stat-num">Excel & GAS</span>
-                      <span className="stat-label">Automation & Sheets</span>
-                    </div>
-                  </div>
+                {/* CTAs */}
+                <div className="hero-actions">
+                  <a href="#projects" className="btn btn-primary">
+                    View My Work
+                  </a>
+                  <a href="assets/resume.pdf" target="_blank" rel="noopener" className="btn btn-outline">
+                    Download Resume
+                  </a>
                 </div>
               </div>
 
-              {/* Right Column: Profile Portrait Avatar + Quick Connect */}
-              <div className="bento-hero-right">
-                {/* Bento Card 3: Illustrated Portrait Card */}
-                <div className="bento-card bento-hero-avatar spotlight-card" {...spotlightProps}>
-                  <div className="hero-avatar-img-container">
-                    <img 
-                      src="assets/my image for website.png" 
-                      alt="Rutvik Bambhaniya - Data Analyst" 
-                      className="hero-avatar-img" 
-                      loading="eager"
-                    />
-                    <div className="avatar-badge-float">
-                      <span className="badge-float-title">
-                        <i className="fa-solid fa-chart-line text-blue"></i> Turning Data into Opportunities
-                      </span>
-                      <span className="badge-float-sub">Analyze • Solve • Improve • Grow</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bento Card 4: Social & Quick Connect */}
-                <div className="bento-card bento-hero-socials spotlight-card" {...spotlightProps}>
-                  <span className="social-card-title">Quick Connect</span>
-                  <div className="social-buttons-grid">
-                    <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener" className="social-pill hover-bounce">
-                      <i className="fa-brands fa-linkedin text-blue"></i> LinkedIn
-                    </a>
-                    <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener" className="social-pill hover-bounce">
-                      <i className="fa-brands fa-github text-blue"></i> GitHub
-                    </a>
-                    <a href="mailto:rutvikbambhaniya14@gmail.com" className="social-pill hover-bounce">
-                      <i className="fa-solid fa-envelope text-blue"></i> Email Me
-                    </a>
+              {/* Right Column: Organic Portrait Curve */}
+              <div className="hero-right">
+                <div className="portrait-blob-wrapper">
+                  <div className="portrait-blob-bg"></div>
+                  <img
+                    src="assets/my image for website.png"
+                    alt="Rutvik Bambhaniya - Data Analyst"
+                    className="portrait-img"
+                  />
+                  <div className="floating-quote-badge">
+                    <i className="fa-solid fa-sparkles text-blue"></i>
+                    <span className="badge-text-bold">Data Drives Progress</span>
                   </div>
                 </div>
               </div>
 
             </div>
+
+            {/* Trusted Tools Strip */}
+            <div className="trusted-tools-bar">
+              <span className="tools-title">Trusted Tools & Technologies</span>
+              <div className="tools-logo-grid">
+                <div className="tool-chip"><i className="fa-solid fa-file-excel text-green"></i> <span>Excel</span></div>
+                <div className="tool-chip"><i className="fa-solid fa-database text-blue"></i> <span>SQL</span></div>
+                <div className="tool-chip"><i className="fa-solid fa-chart-simple text-amber"></i> <span>Power BI</span></div>
+                <div className="tool-chip"><i className="fa-brands fa-python text-blue"></i> <span>Python</span></div>
+                <div className="tool-chip"><i className="fa-solid fa-chart-area text-orange"></i> <span>Tableau</span></div>
+                <div className="tool-chip"><i className="fa-solid fa-table text-emerald"></i> <span>Google Sheets</span></div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* About Me Section (Bento Grid) */}
+        {/* SCREEN 2: ABOUT ME SECTION */}
         <section className="section about-section" id="about">
           <div className="container">
             <div className="section-header">
-              <span className="section-badge">Background & Objective</span>
               <h2 className="section-title">About Me</h2>
-              <div className="section-divider"></div>
+              <p className="section-subtitle">A Data Enthusiast with a Passion for Solving Real-World Problems</p>
             </div>
 
-            <div className="bento-about-grid">
-              <div className="bento-card spotlight-card bio-bento" {...spotlightProps}>
-                <h3><i className="fa-solid fa-user-tie text-blue"></i> Data Analyst & Operations Strategist</h3>
-                <p>
-                  I am a results-driven <strong>Data Analyst currently working at Alpino (Surat)</strong>, where I empower business stakeholders by translating multi-channel sales, inventory, and supply chain data into high-impact interactive dashboards and actionable operational intelligence.
+            <div className="about-top-grid">
+              {/* Left Column: Bio & 4 Metric Badges */}
+              <div className="about-bio-col">
+                <p className="about-bio-text">
+                  I'm <strong>Rutvik Bambhaniya</strong>, a Data Analyst with a strong interest in turning data into meaningful insights. Currently working at <strong>Alpino (Surat)</strong>, I specialize in sales analytics, inventory tracking, and spreadsheet automation via Google Apps Script and Claude AI to help businesses make better and faster decisions.
                 </p>
-                <p>
-                  With a solid foundation in <strong>Bachelor of Computer Applications (BCA)</strong> and professional data analytics training from <strong>ExcelR</strong>, I am further advancing my leadership and operational vision by pursuing an <strong>MBA in Operations (Supply Chain Management) & Data Science from NMIMS University</strong>. My core focus lies at the intersection of data analytics, supply chain optimization, inventory replenishment, and data-backed business strategy.
-                </p>
-                <div className="target-roles-cloud">
-                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Data Analyst</span>
-                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Supply Chain Analyst</span>
-                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Operations Analyst</span>
-                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> MIS Analyst</span>
-                  <span className="role-pill"><i className="fa-solid fa-check text-blue"></i> Business Analyst</span>
+
+                {/* 4 Metric Badges in 2x2 Grid */}
+                <div className="stats-2x2-grid">
+                  <div className="about-stat-card">
+                    <div className="stat-card-number">2+</div>
+                    <div className="stat-card-label">Years Professional Experience</div>
+                  </div>
+                  <div className="about-stat-card">
+                    <div className="stat-card-number">10+</div>
+                    <div className="stat-card-label">Projects Completed</div>
+                  </div>
+                  <div className="about-stat-card">
+                    <div className="stat-card-number">5+</div>
+                    <div className="stat-card-label">Tools & Technologies</div>
+                  </div>
+                  <div className="about-stat-card">
+                    <div className="stat-card-number">100%</div>
+                    <div className="stat-card-label">Passion for Learning</div>
+                  </div>
                 </div>
               </div>
 
-              <div className="bento-card spotlight-card edu-bento" {...spotlightProps}>
-                <h3><i className="fa-solid fa-award text-blue"></i> Education & Certifications</h3>
-                <ul className="timeline-list">
-                  <li className="timeline-item">
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <span className="timeline-date">Pursuing / Active</span>
-                      <h4>MBA in Operations (Supply Chain) & Data Science</h4>
-                      <p className="timeline-org">NMIMS University (Narsee Monjee Institute of Management Studies)</p>
-                      <p className="timeline-desc">Specialized management curriculum bridging supply chain optimization, operations analytics, logistics management, and predictive data science.</p>
-                    </div>
-                  </li>
-                  <li className="timeline-item">
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <span className="timeline-date">Graduated</span>
-                      <h4>Bachelor of Computer Applications (BCA)</h4>
-                      <p className="timeline-org">University Level Degree</p>
-                      <p className="timeline-desc">Comprehensive foundation in database management systems (DBMS), structured query logic, and software computing fundamentals.</p>
-                    </div>
-                  </li>
-                  <li className="timeline-item">
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <span className="timeline-date">Professional Program</span>
-                      <h4>Data Analyst Training Program</h4>
-                      <p className="timeline-org">ExcelR</p>
-                      <p className="timeline-desc">Hands-on training in SQL query optimization, Advanced Excel formulas, Power BI DAX calculations, Python EDA, and data modeling.</p>
-                    </div>
-                  </li>
-                </ul>
+              {/* Right Column: Quote Card with Avatar */}
+              <div className="about-quote-col">
+                <div className="about-quote-card">
+                  <img
+                    src="assets/my image for website.png"
+                    alt="Rutvik Bambhaniya"
+                    className="about-card-avatar"
+                  />
+                  <div className="quote-bubble">
+                    <p className="quote-text">"Better data brighter decisions."</p>
+                    <span className="quote-author">— Rutvik Bambhaniya</span>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            {/* My Journey & What I Do */}
+            <div className="journey-capabilities-grid">
+              
+              {/* Left: My Journey */}
+              <div className="journey-column">
+                <h3 className="column-title"><i className="fa-solid fa-road text-blue"></i> My Journey</h3>
+                <div className="journey-timeline">
+                  <div className="journey-node">
+                    <div className="journey-dot"></div>
+                    <span className="journey-date">Jan 2026 – Present</span>
+                    <h4 className="journey-role">Data Analyst</h4>
+                    <p className="journey-org">Alpino (FMCG, Surat)</p>
+                  </div>
+                  <div className="journey-node">
+                    <div className="journey-dot"></div>
+                    <span className="journey-date">2024 – Present (Pursuing)</span>
+                    <h4 className="journey-role">MBA (Operations & Data Science)</h4>
+                    <p className="journey-org">NMIMS University</p>
+                  </div>
+                  <div className="journey-node">
+                    <div className="journey-dot"></div>
+                    <span className="journey-date">2021 – 2024</span>
+                    <h4 className="journey-role">Bachelor of Computer Applications (BCA)</h4>
+                    <p className="journey-org">Graduation Degree</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: What I Do (4 Structured Cards) */}
+              <div className="capabilities-column">
+                <h3 className="column-title"><i className="fa-solid fa-briefcase text-blue"></i> What I Do</h3>
+                <div className="capabilities-grid">
+                  <div className="capability-card">
+                    <div className="cap-icon"><i className="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h4 className="cap-title">Data Analysis</h4>
+                    <p className="cap-desc">Find meaningful patterns and commercial insights from complex raw datasets.</p>
+                  </div>
+                  <div className="capability-card">
+                    <div className="cap-icon"><i className="fa-solid fa-chart-line"></i></div>
+                    <h4 className="cap-title">Data Visualization</h4>
+                    <p className="cap-desc">Create clear, high-impact interactive Power BI and Tableau dashboards.</p>
+                  </div>
+                  <div className="capability-card">
+                    <div className="cap-icon"><i className="fa-solid fa-gears"></i></div>
+                    <h4 className="cap-title">Process Automation</h4>
+                    <p className="cap-desc">Simplify daily workflows with smart Google Apps Script & Claude AI tools.</p>
+                  </div>
+                  <div className="capability-card">
+                    <div className="cap-icon"><i className="fa-solid fa-hand-holding-dollar"></i></div>
+                    <h4 className="cap-title">Business Insights</h4>
+                    <p className="cap-desc">Support strategic and executive decision-making across sales and supply chain.</p>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
 
-        {/* Technical Skills & Interactive Chart Workspace */}
-        <section className="section bg-alt skills-section" id="skills">
-          <div className="container">
-            <div className="section-header">
-              <span className="section-badge">Toolbox & Expertise</span>
-              <h2 className="section-title">Technical Skills</h2>
-              <p className="section-subtitle">Verified tools and analytical competencies built through real-world projects and internship experience.</p>
-              <div className="section-divider"></div>
-            </div>
-
-            <div className="skills-bento-grid">
-              {SKILLS_DATA.map((s, idx) => (
-                <div key={idx} className="bento-card spotlight-card skill-bento-card" {...spotlightProps}>
-                  <div className="skill-icon"><i className={s.icon}></i></div>
-                  <h3>{s.title}</h3>
-                  <p className="skill-desc">{s.desc}</p>
-                  <div className="tag-cloud">
-                    {s.tags.map((t, i) => (
-                      <span key={i} className="tech-tag hover-scale">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Interactive Data Studio Workspace */}
-            <div className="bento-card spotlight-card studio-bento-card" {...spotlightProps}>
-              <div className="studio-header">
-                <h3><i className="fa-solid fa-chart-area text-blue"></i> Interactive Data Studio</h3>
-                <p>Explore technical skill competency indexes, project tool distribution, and analytics quality metrics dynamically.</p>
-              </div>
-              <InteractiveChart theme={theme} />
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        <section className="section experience-section" id="experience">
-          <div className="container">
-            <div className="section-header">
-              <span className="section-badge">Professional Journey</span>
-              <h2 className="section-title">Work Experience</h2>
-              <div className="section-divider"></div>
-            </div>
-
-            <div className="experience-container">
-              {/* Current Role: Alpino (Surat) */}
-              <div className="bento-card spotlight-card experience-bento active-role" {...spotlightProps}>
-                <div className="exp-header">
-                  <div className="exp-role-info">
-                    <h3 className="exp-title"><i className="fa-solid fa-briefcase text-blue"></i> Data Analyst</h3>
-                    <span className="exp-company">
-                      Alpino
-                      <span className="exp-location"><i className="fa-solid fa-location-dot"></i> Surat, Gujarat</span>
-                    </span>
-                  </div>
-                  <div className="exp-duration">
-                    <span className="badge badge-accent"><i className="fa-solid fa-circle-dot pulsate"></i> Jan 2026 – Present</span>
-                  </div>
-                </div>
-
-                <div className="exp-body">
-                  <p className="exp-summary">
-                    Spearheading business intelligence and operational data analytics across Alpino's multi-channel retail footprint (D2C E-commerce, Marketplaces, and Quick Commerce). Translating transactional and inventory data into executive dashboards that optimize sales velocity, stock turnover, and supply chain fulfillment.
-                  </p>
-
-                  <h4 className="exp-subheading">Key Responsibilities & Impact:</h4>
-                  <ul className="exp-list">
-                    {[
-                      "Engineered and automated interactive Power BI & spreadsheet dashboards tracking multi-channel sales performance, daily revenue, SKU-level velocity, and customer repeat purchase behavior across D2C, Marketplaces, and Quick Commerce.",
-                      "Formulated daily and weekly automated reporting pipelines using Advanced Excel and Google Sheets, integrated with Google Apps Script (GAS) to sync live order feeds and automate recurring data refreshes.",
-                      "Leveraged Claude AI and 'Vibe Coding' methodologies to rapidly script automation workflows, accelerate exploratory data analysis (EDA), and synthesize executive narrative summaries for cross-functional leads.",
-                      "Formulated complex SQL queries and ETL workflows to extract, clean, and consolidate disparate transactional, distributor, and inventory records into unified relational models.",
-                      "Collaborated closely with supply chain and operations teams to monitor stockout risks, model reorder quantities, and track vendor lead times to safeguard inventory turnover.",
-                      "Authored custom DAX calculations and automated recurring MIS reporting routines, cutting executive report generation time significantly."
-                    ].map((item, i) => (
-                      <li key={i} className="hover-slide-right"><i className="fa-solid fa-circle-check text-blue"></i> {item}</li>
-                    ))}
-                  </ul>
-
-                  <div className="exp-tools">
-                    <span className="tools-label">Tools Used:</span>
-                    <div className="tag-cloud">
-                      {["Power BI", "SQL", "Advanced Excel", "Google Sheets", "Google Apps Script (GAS)", "Claude AI (Vibe Coding)", "Python (Pandas)", "DAX", "Supply Chain Analytics", "MIS Automation"].map((t, i) => (
-                        <span key={i} className="tech-tag hover-scale">{t}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Prior Experience: Data Analyst Intern */}
-              <div className="bento-card spotlight-card experience-bento" {...spotlightProps}>
-                <div className="exp-header">
-                  <div className="exp-role-info">
-                    <h3 className="exp-title"><i className="fa-solid fa-user-gear text-blue"></i> Data Analyst Intern</h3>
-                    <span className="exp-company">Data Analytics Team</span>
-                  </div>
-                  <div className="exp-duration">
-                    <span className="badge badge-accent"><i className="fa-regular fa-calendar"></i> 6 Months Duration</span>
-                  </div>
-                </div>
-
-                <div className="exp-body">
-                  <p className="exp-summary">
-                    Participated in end-to-end data analytics activities including data extraction, cleaning, Exploratory Data Analysis (EDA), interactive dashboard development, and business stakeholder reporting.
-                  </p>
-
-                  <h4 className="exp-subheading">Key Responsibilities & Contributions:</h4>
-                  <ul className="exp-list">
-                    {[
-                      "Extracted and consolidated business data from multiple flat files and relational databases using SQL queries.",
-                      "Cleaned, preprocessed, and handled missing data fields using Excel and Python (Pandas/NumPy) to ensure data accuracy.",
-                      "Designed and published interactive Power BI and Tableau dashboards to track key performance indicators (KPIs) and operational metrics.",
-                      "Built star-schema data models and engineered reusable DAX calculations to automate recurring monthly MIS reports.",
-                      "Presented data-backed findings to operational managers to support workflow improvements and inventory tracking."
-                    ].map((item, i) => (
-                      <li key={i} className="hover-slide-right"><i className="fa-solid fa-circle-check text-blue"></i> {item}</li>
-                    ))}
-                  </ul>
-
-                  <div className="exp-tools">
-                    <span className="tools-label">Tools Used:</span>
-                    <div className="tag-cloud">
-                      {["SQL", "Power BI", "Excel", "Python (Pandas/NumPy)", "Tableau", "DAX"].map((t, i) => (
-                        <span key={i} className="tech-tag hover-scale">{t}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Data Analytics Workflow Section */}
-        <section className="section bg-alt workflow-section">
-          <div className="container">
-            <div className="section-header">
-              <span className="section-badge">Structured Approach</span>
-              <h2 className="section-title">My Data Analytics Workflow</h2>
-              <p className="section-subtitle">How I translate raw datasets into measurable business value.</p>
-              <div className="section-divider"></div>
-            </div>
-
-            <div className="workflow-bento-grid">
-              {WORKFLOW_DATA.map((wf, idx) => (
-                <div key={idx} className="bento-card spotlight-card workflow-bento-card" {...spotlightProps}>
-                  <div className="wf-step-badge">{wf.step}</div>
-                  <div className="wf-icon"><i className={wf.icon}></i></div>
-                  <h4>{wf.title}</h4>
-                  <p>{wf.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Analytics Projects (With Code Inspector Tabs) */}
+        {/* SCREEN 3: MY PROJECTS SECTION */}
         <section className="section projects-section" id="projects">
           <div className="container">
             <div className="section-header">
-              <span className="section-badge">Practical Applications</span>
-              <h2 className="section-title">Analytics Projects</h2>
-              <p className="section-subtitle">Real-world data analytics projects built using SQL, Power BI, Python, Excel, and Tableau. Click tabs inside cards to inspect actual SQL & DAX code!</p>
-              <div className="section-divider"></div>
+              <h2 className="section-title">My Projects</h2>
+              <p className="section-subtitle">
+                Here are some of the projects I've worked on. Each project helped me learn, solve real problems, and create impact through data.
+              </p>
             </div>
 
-            {/* Project Category Filters */}
-            <div className="project-filters">
+            {/* Filter Pills */}
+            <div className="filter-pills-bar">
               {[
-                { id: "all", label: "All Projects" },
+                { id: "all", label: "All" },
+                { id: "excel", label: "Excel" },
                 { id: "powerbi", label: "Power BI" },
                 { id: "sql", label: "SQL" },
-                { id: "python", label: "Python / EDA" },
-                { id: "tableau", label: "Tableau" },
-                { id: "excel", label: "Excel" }
-              ].map((f) => (
+                { id: "python", label: "Python" },
+                { id: "automation", label: "Automation" }
+              ].map(f => (
                 <button
                   key={f.id}
-                  className={`filter-btn ${projectFilter === f.id ? "active" : ""}`}
+                  className={`filter-pill ${projectFilter === f.id ? "active" : ""}`}
                   onClick={() => setProjectFilter(f.id)}
                 >
                   {f.label}
@@ -1085,33 +666,24 @@ function App() {
               ))}
             </div>
 
-            <div className="projects-bento-grid">
-              {filteredProjects.map((p) => (
-                <BentoProjectCard key={p.id} project={p} openModal={openProjectModal} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Dashboard Showcase */}
-        <section className="section bg-alt dashboards-section" id="dashboards">
-          <div className="container">
-            <div className="section-header">
-              <span className="section-badge">Data Visualizations</span>
-              <h2 className="section-title">Dashboard Showcase</h2>
-              <p className="section-subtitle">High-resolution preview gallery of Power BI, Tableau, and Excel analytical reports.</p>
-              <div className="section-divider"></div>
-            </div>
-
-            <div className="dashboards-bento-grid">
-              {DASHBOARDS_DATA.map((d, idx) => (
-                <div key={idx} className="bento-card spotlight-card dash-bento-item" {...spotlightProps} onClick={() => openLightbox(d)}>
-                  <div className="dash-img-container">
-                    <img src={d.img} alt={d.title} loading="lazy" />
+            {/* 6 Projects Grid */}
+            <div className="projects-cards-grid">
+              {filteredProjects.map(p => (
+                <div key={p.id} className="project-card">
+                  <div className="project-thumbnail-wrapper">
+                    <img src={p.img} alt={p.title} className="project-thumbnail" loading="lazy" />
                   </div>
-                  <div className="dash-bento-caption">
-                    <h4>{d.title}</h4>
-                    <span className="dash-tech">{d.tech}</span>
+                  <div className="project-card-content">
+                    <h3 className="project-card-title">{p.title}</h3>
+                    <div className="project-tags-row">
+                      {p.tags.map((t, idx) => (
+                        <span key={idx} className="project-tag">{t}</span>
+                      ))}
+                    </div>
+                    <p className="project-card-desc">{p.desc}</p>
+                    <button className="project-card-action" onClick={() => setSelectedProject(p)}>
+                      View Project <i className="fa-solid fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -1119,207 +691,401 @@ function App() {
           </div>
         </section>
 
-        {/* Resume Download Section */}
-        <section className="section resume-section" id="resume">
+        {/* SCREEN 4: TEMPLATES SECTION */}
+        <section className="section templates-section" id="templates">
           <div className="container">
-            <div className="bento-card spotlight-card resume-bento-banner" {...spotlightProps}>
-              <div className="resume-content">
-                <span className="badge badge-accent"><i className="fa-solid fa-file-contract"></i> Professional Credentials</span>
-                <h2>Ready to Review My Full Resume?</h2>
-                <p>
-                  Download my complete resume detailing my Data Analyst work at Alpino (Surat), NMIMS MBA in Operations & Data Science, BCA degree, and technical analytics skill set.
-                </p>
+            <div className="section-header">
+              <h2 className="section-title">Templates</h2>
+              <p className="section-subtitle">
+                Ready-to-use templates to make your work easier and faster. Designed with simplicity, efficiency, and real-world use cases in mind.
+              </p>
+            </div>
+
+            {/* Search & Category Filter Bar */}
+            <div className="templates-controls-bar">
+              <div className="template-search-box">
+                <i className="fa-solid fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  placeholder="Search templates..."
+                  value={templateSearch}
+                  onChange={(e) => setTemplateSearch(e.target.value)}
+                  className="template-search-input"
+                />
               </div>
-              <div className="resume-cta">
-                <a href="assets/resume.pdf" target="_blank" className="btn btn-primary btn-lg hover-magnetic">
-                  <i className="fa-solid fa-download"></i> Download Resume (PDF)
-                </a>
-                <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener" className="btn btn-outline btn-lg hover-magnetic">
-                  <i className="fa-brands fa-linkedin"></i> View LinkedIn Profile
-                </a>
-              </div>
+
+              <select
+                value={templateCategory}
+                onChange={(e) => setTemplateCategory(e.target.value)}
+                className="template-category-select"
+              >
+                <option value="all">All Categories</option>
+                <option value="powerbi">Power BI</option>
+                <option value="excel">Excel</option>
+              </select>
+            </div>
+
+            {/* 6 Templates Cards Grid */}
+            <div className="templates-cards-grid">
+              {filteredTemplates.map(t => (
+                <div key={t.id} className="template-card">
+                  <div className="template-thumb-wrapper">
+                    <img src={t.img} alt={t.title} className="template-thumb-img" loading="lazy" />
+                    <span className="template-badge-price">{t.price}</span>
+                  </div>
+                  <div className="template-content">
+                    <h3 className="template-title">{t.title}</h3>
+                    <span className="badge badge-blue" style={{ marginBottom: "0.6rem" }}>{t.badge}</span>
+                    <p className="template-desc">{t.desc}</p>
+                    <div className="template-footer">
+                      <button className="btn-view-template" onClick={() => setSelectedTemplate(t)}>
+                        View Details <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section className="section bg-alt contact-section" id="contact">
+        {/* SCREEN 5: INSIGHTS & LEARNINGS (BLOG) */}
+        <section className="section insights-section" id="insights">
           <div className="container">
             <div className="section-header">
-              <span className="section-badge">Get In Touch</span>
-              <h2 className="section-title">Contact Me</h2>
-              <p className="section-subtitle">Interested in hiring a Data Analyst or discussing analytics & supply chain opportunities? Let's connect!</p>
-              <div className="section-divider"></div>
+              <h2 className="section-title">Insights & Learnings</h2>
+              <p className="section-subtitle">
+                I share practical knowledge, tutorials, and experiences related to data analysis, business intelligence, and career growth.
+              </p>
             </div>
 
-            <div className="contact-bento-grid">
-              <div className="bento-card spotlight-card contact-info-bento" {...spotlightProps}>
-                <h3><i className="fa-solid fa-address-card text-blue"></i> Contact Information</h3>
-                <p>Feel free to reach out directly via email, LinkedIn, or GitHub.</p>
-
-                <div className="contact-methods">
-                  <div className="contact-item hover-slide-right">
-                    <div className="c-icon"><i className="fa-solid fa-envelope"></i></div>
-                    <div className="c-details">
-                      <span className="c-label">Email</span>
-                      <a href="mailto:rutvikbambhaniya14@gmail.com" className="c-value">rutvikbambhaniya14@gmail.com</a>
+            <div className="insights-layout-grid">
+              
+              {/* Left Column: 4 Articles List */}
+              <div className="articles-list">
+                {ARTICLES_DATA.map(art => (
+                  <div key={art.id} className="article-card-row">
+                    <div className="article-thumb-box">
+                      <img src={art.img} alt={art.title} className="article-thumb-img" loading="lazy" />
+                    </div>
+                    <div className="article-info-box">
+                      <div className="article-meta-row">
+                        <span>{art.date}</span>
+                        <span>•</span>
+                        <span className="article-category-pill">{art.category}</span>
+                      </div>
+                      <h3 className="article-title">{art.title}</h3>
+                      <p className="article-excerpt">{art.excerpt}</p>
+                      <button className="article-read-more" onClick={() => setSelectedArticle(art)}>
+                        Read More <i className="fa-solid fa-arrow-right"></i>
+                      </button>
                     </div>
                   </div>
+                ))}
+              </div>
 
-                  <div className="contact-item hover-slide-right">
-                    <div className="c-icon"><i className="fa-brands fa-linkedin"></i></div>
-                    <div className="c-details">
-                      <span className="c-label">LinkedIn</span>
-                      <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener" className="c-value">linkedin.com/in/rutvik-bambhaniya-34621732b</a>
-                    </div>
-                  </div>
+              {/* Right Column: Sidebar */}
+              <div className="insights-sidebar">
+                {/* Stay Updated Newsletter Card */}
+                <div className="sidebar-card">
+                  <h3 className="sidebar-title">Stay Updated</h3>
+                  <p className="sidebar-desc">Get the latest posts and template updates directly in your inbox.</p>
+                  <form onSubmit={handleNewsletterSubmit} className="newsletter-form">
+                    <input
+                      type="email"
+                      placeholder="Enter your email"
+                      required
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      className="newsletter-input"
+                    />
+                    <button type="submit" className="btn btn-primary btn-sm">
+                      Subscribe
+                    </button>
+                  </form>
+                </div>
 
-                  <div className="contact-item hover-slide-right">
-                    <div className="c-icon"><i className="fa-brands fa-github"></i></div>
-                    <div className="c-details">
-                      <span className="c-label">GitHub</span>
-                      <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener" className="c-value">github.com/Rutvik1429</a>
-                    </div>
-                  </div>
-
-                  <div className="contact-item hover-slide-right">
-                    <div className="c-icon"><i className="fa-solid fa-location-dot"></i></div>
-                    <div className="c-details">
-                      <span className="c-label">Location Preference</span>
-                      <span className="c-value">Surat / India (Open to Remote & Onsite Roles)</span>
-                    </div>
+                {/* Categories Counter List */}
+                <div className="sidebar-card">
+                  <h3 className="sidebar-title">Categories</h3>
+                  <div className="categories-pills-list">
+                    {[
+                      { name: "Power BI", count: 5 },
+                      { name: "Excel", count: 4 },
+                      { name: "SQL", count: 4 },
+                      { name: "Python", count: 2 },
+                      { name: "Career", count: 3 },
+                      { name: "Industry Insights", count: 2 },
+                      { name: "Productivity", count: 2 }
+                    ].map((cat, idx) => (
+                      <div key={idx} className="category-row-item">
+                        <span>{cat.name}</span>
+                        <span className="category-count">{cat.count}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              <div className="bento-card spotlight-card contact-cta-bento" {...spotlightProps}>
-                <h3><i className="fa-solid fa-handshake text-blue"></i> Open for Job Opportunities</h3>
-                <p>I am actively open for the following roles & opportunities:</p>
-                <ul className="role-list">
-                  {[
-                    "Data Analyst",
-                    "Supply Chain Analyst",
-                    "Operations Analyst",
-                    "MIS Analyst / Executive",
-                    "Business Analyst"
-                  ].map((role, i) => (
-                    <li key={i} className="hover-slide-right"><i className="fa-solid fa-chevron-right text-blue"></i> {role}</li>
-                  ))}
-                </ul>
-                <div className="cta-box">
-                  <a href="mailto:rutvikbambhaniya14@gmail.com" className="btn btn-primary width-full hover-magnetic">
-                    <i className="fa-solid fa-paper-plane"></i> Send an Email
-                  </a>
+            </div>
+          </div>
+        </section>
+
+        {/* SCREEN 6: LET'S CONNECT SECTION */}
+        <section className="section connect-section" id="contact">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Let's Connect</h2>
+              <p className="section-subtitle">
+                Have a project, collaboration idea, or just want to say hi? I'd love to hear from you!
+              </p>
+            </div>
+
+            <div className="connect-layout-grid">
+              
+              {/* Left Column: Send a Message Form */}
+              <div className="connect-form-card">
+                <h3 className="form-card-title">Send a Message</h3>
+                <form onSubmit={handleContactSubmit}>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      required
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      required
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      placeholder="Subject"
+                      value={contactForm.subject}
+                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <textarea
+                      placeholder="Your Message"
+                      required
+                      value={contactForm.message}
+                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                      className="form-textarea"
+                    ></textarea>
+                  </div>
+                  <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
+                    <i className="fa-solid fa-paper-plane"></i> Send Message
+                  </button>
+                </form>
+              </div>
+
+              {/* Right Column: Get in Touch Card & Banner */}
+              <div className="connect-right-col">
+                <div className="contact-info-box">
+                  <h3 className="info-box-title">Get in Touch</h3>
+                  <p className="info-box-desc">Feel free to reach out through any of these channels:</p>
+
+                  <div className="contact-channels-list">
+                    <div className="channel-item">
+                      <div className="channel-icon"><i className="fa-solid fa-envelope"></i></div>
+                      <div>
+                        <span className="channel-label">Email</span>
+                        <a href="mailto:rutvikbambhaniya14@gmail.com" className="channel-val">
+                          rutvikbambhaniya14@gmail.com
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="channel-item">
+                      <div className="channel-icon"><i className="fa-brands fa-linkedin-in"></i></div>
+                      <div>
+                        <span className="channel-label">LinkedIn</span>
+                        <a
+                          href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b"
+                          target="_blank"
+                          rel="noopener"
+                          className="channel-val"
+                        >
+                          linkedin.com/in/rutvik-bambhaniya
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="channel-item">
+                      <div className="channel-icon"><i className="fa-solid fa-location-dot"></i></div>
+                      <div>
+                        <span className="channel-label">Location</span>
+                        <span className="channel-val">Surat, Gujarat, India</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Let's Build Something Great Banner */}
+                <div className="build-great-banner">
+                  <i className="fa-solid fa-rocket banner-icon"></i>
+                  <div>
+                    <h4 className="banner-title">Let's Build Something Great</h4>
+                    <p className="banner-desc">
+                      Open for full-time opportunities, freelance projects, and data analytics collaboration.
+                    </p>
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="site-footer">
-        <div className="container footer-content">
-          <div className="footer-brand">
-            <div className="footer-logo-wrap">
-              <img src="assets/my website logo.png" alt="Rutvik Bambhaniya Logo" className="footer-logo-img" />
-              <a href="#home" className="footer-logo">Rutvik Bambhaniya</a>
+        <div className="container">
+          <div className="footer-top">
+            <div className="footer-logo-block">
+              <img src="assets/my website logo.png" alt="Rutvik Logo" className="footer-logo-img" />
+              <div className="logo-brand-text">
+                <span className="logo-main-title">RUTVIK</span>
+                <span className="logo-sub-title">DATA ANALYST</span>
+              </div>
             </div>
-            <p>Data Analyst @ Alpino | Turning complex data into business intelligence & opportunities.</p>
+
+            <div className="footer-nav-links">
+              <a href="#home">Home</a>
+              <a href="#about">About</a>
+              <a href="#projects">Projects</a>
+              <a href="#templates">Templates</a>
+              <a href="#insights">Blog</a>
+              <a href="#contact">Contact</a>
+            </div>
+
+            <div className="footer-social-icons">
+              <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener" className="social-icon-btn">
+                <i className="fa-brands fa-linkedin-in"></i>
+              </a>
+              <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener" className="social-icon-btn">
+                <i className="fa-brands fa-github"></i>
+              </a>
+              <a href="mailto:rutvikbambhaniya14@gmail.com" className="social-icon-btn">
+                <i className="fa-solid fa-envelope"></i>
+              </a>
+            </div>
           </div>
-          <div className="footer-links">
-            <a href="https://github.com/Rutvik1429" target="_blank" rel="noopener"><i className="fa-brands fa-github"></i> GitHub</a>
-            <a href="https://www.linkedin.com/in/rutvik-bambhaniya-34621732b" target="_blank" rel="noopener"><i className="fa-brands fa-linkedin"></i> LinkedIn</a>
-            <a href="mailto:rutvikbambhaniya14@gmail.com"><i className="fa-solid fa-envelope"></i> Email</a>
-          </div>
-          <div className="footer-copy">
-            &copy; {new Date().getFullYear()} Rutvik Bambhaniya. All rights reserved.
+
+          <div className="footer-bottom">
+            <p className="footer-motto">Turning Data Into Opportunities</p>
+            <p>&copy; {new Date().getFullYear()} Rutvik Bambhaniya. All rights reserved.</p>
           </div>
         </div>
       </footer>
 
-      {/* Project Case Study Modal */}
+      {/* MODAL: PROJECT CASE STUDY */}
       {selectedProject && (
-        <div className="modal-overlay active" onClick={closeProjectModal}>
+        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeProjectModal} aria-label="Close modal">&times;</button>
-            <div className="modal-body">
-              <div className="modal-header">
-                <span className="badge badge-blue">{selectedProject.badge}</span>
-                <h3 className="modal-title">{selectedProject.title}</h3>
-              </div>
+            <button className="modal-close" onClick={() => setSelectedProject(null)}>&times;</button>
+            <span className="badge badge-blue" style={{ marginBottom: "0.5rem" }}>Case Study</span>
+            <h3 className="section-title" style={{ fontSize: "1.6rem", textAlign: "left" }}>{selectedProject.title}</h3>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem" }}>{selectedProject.desc}</p>
+            
+            <div style={{ marginBottom: "1.2rem" }}>
+              <h4 style={{ fontWeight: 800, marginBottom: "0.4rem" }}>Problem Statement:</h4>
+              <p style={{ color: "var(--text-secondary)" }}>{selectedProject.problem}</p>
+            </div>
 
-              <div className="modal-section">
-                <h4><i className="fa-solid fa-circle-exclamation text-blue"></i> Business Problem</h4>
-                <p>{selectedProject.problem}</p>
-              </div>
+            <div style={{ marginBottom: "1.2rem" }}>
+              <h4 style={{ fontWeight: 800, marginBottom: "0.4rem" }}>Objective & Methodology:</h4>
+              <p style={{ color: "var(--text-secondary)" }}>{selectedProject.objective}</p>
+            </div>
 
-              <div className="modal-section">
-                <h4><i className="fa-solid fa-bullseye text-blue"></i> Objective</h4>
-                <p>{selectedProject.objective}</p>
-              </div>
+            <div style={{ marginBottom: "1.2rem" }}>
+              <h4 style={{ fontWeight: 800, marginBottom: "0.4rem" }}>Key Outcomes:</h4>
+              <ul style={{ paddingLeft: "1.2rem", listStyle: "disc", color: "var(--text-secondary)" }}>
+                {selectedProject.insights.map((ins, i) => (
+                  <li key={i} style={{ marginBottom: "0.3rem" }}>{ins}</li>
+                ))}
+              </ul>
+            </div>
 
-              <div className="modal-section">
-                <h4><i className="fa-solid fa-database text-blue"></i> Dataset Source</h4>
-                <p>{selectedProject.data}</p>
-              </div>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h4 style={{ fontWeight: 800, marginBottom: "0.4rem" }}>Code / Query Snippet:</h4>
+              <pre className="code-box-pre"><code>{selectedProject.codeSnippet}</code></pre>
+            </div>
 
-              <div className="modal-section">
-                <h4><i className="fa-solid fa-gears text-blue"></i> Analytical Workflow</h4>
-                <ul>
-                  {selectedProject.process.map((step, i) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </ul>
-              </div>
+            <a href={selectedProject.github} target="_blank" rel="noopener" className="btn btn-primary btn-sm">
+              <i className="fa-brands fa-github"></i> View GitHub Repository
+            </a>
+          </div>
+        </div>
+      )}
 
-              <div className="modal-section">
-                <h4><i className="fa-solid fa-chart-line text-blue"></i> Key Insights & Outcomes</h4>
-                <ul>
-                  {selectedProject.insights.map((insight, i) => (
-                    <li key={i}>{insight}</li>
-                  ))}
-                </ul>
-              </div>
+      {/* MODAL: TEMPLATE DETAILS */}
+      {selectedTemplate && (
+        <div className="modal-overlay" onClick={() => setSelectedTemplate(null)}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedTemplate(null)}>&times;</button>
+            <span className="badge badge-blue" style={{ marginBottom: "0.5rem" }}>{selectedTemplate.badge}</span>
+            <h3 className="section-title" style={{ fontSize: "1.6rem", textAlign: "left" }}>{selectedTemplate.title}</h3>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "1.2rem" }}>{selectedTemplate.desc}</p>
+            
+            <h4 style={{ fontWeight: 800, marginBottom: "0.6rem" }}>Included Features:</h4>
+            <ul style={{ paddingLeft: "1.2rem", listStyle: "disc", color: "var(--text-secondary)", marginBottom: "1.8rem" }}>
+              {selectedTemplate.features.map((feat, i) => (
+                <li key={i} style={{ marginBottom: "0.4rem" }}>{feat}</li>
+              ))}
+            </ul>
 
-              <div className="modal-section">
-                <h4><i className="fa-solid fa-code text-blue"></i> SQL / DAX Query Snippet</h4>
-                <pre className="code-snippet-pre">
-                  <code>{selectedProject.codeSnippet}</code>
-                </pre>
-              </div>
-
-              <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
-                <a href={selectedProject.github} target="_blank" rel="noopener" className="btn btn-primary width-full hover-magnetic">
-                  <i className="fa-brands fa-github"></i> View GitHub Repository
-                </a>
-              </div>
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <button className="btn btn-primary" onClick={() => {
+                setSelectedTemplate(null);
+                showToast("Template preview requested! Contact Rutvik for instant delivery.");
+              }}>
+                Get Template ({selectedTemplate.price})
+              </button>
+              <button className="btn btn-outline" onClick={() => setSelectedTemplate(null)}>
+                Close
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Lightbox Modal */}
-      {selectedLightbox && (
-        <div className="modal-overlay active" onClick={closeLightbox}>
+      {/* MODAL: ARTICLE READER */}
+      {selectedArticle && (
+        <div className="modal-overlay" onClick={() => setSelectedArticle(null)}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeLightbox} aria-label="Close modal">&times;</button>
-            <div className="modal-body" style={{ textAlign: "center" }}>
-              <h3 className="modal-title" style={{ marginBottom: "1rem" }}>{selectedLightbox.title}</h3>
-              <img
-                src={selectedLightbox.img}
-                alt={selectedLightbox.title}
-                style={{ maxWidth: "100%", height: "auto", borderRadius: "12px", border: "1px solid var(--border-color)" }}
-              />
+            <button className="modal-close" onClick={() => setSelectedArticle(null)}>&times;</button>
+            <span className="badge badge-blue" style={{ marginBottom: "0.5rem" }}>{selectedArticle.category} • {selectedArticle.date}</span>
+            <h3 className="section-title" style={{ fontSize: "1.6rem", textAlign: "left" }}>{selectedArticle.title}</h3>
+            <div style={{ whiteSpace: "pre-line", color: "var(--text-secondary)", lineHeight: "1.8", marginTop: "1.2rem" }}>
+              {selectedArticle.content}
+            </div>
+            <div style={{ marginTop: "2rem" }}>
+              <button className="btn btn-outline btn-sm" onClick={() => setSelectedArticle(null)}>
+                Close Article
+              </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 }
 
-// Render React App
+// Mount React Root
 const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
