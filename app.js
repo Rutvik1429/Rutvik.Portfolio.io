@@ -451,10 +451,22 @@ function App() {
       <main>
         {/* SCREEN 1: HERO SECTION */}
         <section className="hero-section" id="home">
-          <div className="container">
+          {/* Large Hero Visual / Background Layer (Desktop & Tablet) */}
+          <div className="hero-visual-bg-layer" aria-hidden="true">
+            <img
+              src="assets/profile back.png"
+              alt="Rutvik Bambhaniya - Data Analyst"
+              className="hero-visual-bg-img"
+              loading="eager"
+            />
+            <div className="hero-visual-fade-left"></div>
+            <div className="hero-visual-fade-bottom"></div>
+          </div>
+
+          <div className="container hero-container">
             <div className="hero-grid">
               
-              {/* Left Column */}
+              {/* Left Column: Clean & Spacious Typography */}
               <div className="hero-left">
                 <span className="hero-greeting">Hi, I'm</span>
                 <h1 className="hero-name">Rutvik Bambhaniya</h1>
@@ -462,24 +474,8 @@ function App() {
                   Data Analyst | <span className="text-gradient">Turning Data into Opportunities</span>
                 </h2>
                 <p className="hero-desc">
-                  I help businesses make better decisions through data analysis, visualization, and automation. Currently driving sales, supply chain, and retail insights at <strong>Alpino (Surat)</strong>.
+                  I help businesses make better decisions through data analysis, visualization, automation, and business insights.
                 </p>
-
-                {/* 3 Value Badges */}
-                <div className="hero-value-props">
-                  <div className="value-prop-item">
-                    <div className="value-prop-icon"><i className="fa-solid fa-chart-pie"></i></div>
-                    <span className="value-prop-label">Analyze Data</span>
-                  </div>
-                  <div className="value-prop-item">
-                    <div className="value-prop-icon"><i className="fa-solid fa-lightbulb"></i></div>
-                    <span className="value-prop-label">Build Insights</span>
-                  </div>
-                  <div className="value-prop-item">
-                    <div className="value-prop-icon"><i className="fa-solid fa-chart-line"></i></div>
-                    <span className="value-prop-label">Drive Growth</span>
-                  </div>
-                </div>
 
                 {/* CTAs */}
                 <div className="hero-actions">
@@ -492,20 +488,14 @@ function App() {
                 </div>
               </div>
 
-              {/* Right Column: Organic Portrait Curve */}
+              {/* Right Column: Natural Visual Anchor (Responsive for Mobile) */}
               <div className="hero-right">
-                <div className="portrait-blob-wrapper">
-                  <div className="portrait-blob-bg"></div>
-                  <img
-                    src="assets/my image for website.png"
-                    alt="Rutvik Bambhaniya - Data Analyst"
-                    className="portrait-img"
-                  />
-                  <div className="floating-quote-badge">
-                    <i className="fa-solid fa-sparkles text-blue"></i>
-                    <span className="badge-text-bold">Data Drives Progress</span>
-                  </div>
-                </div>
+                <img
+                  src="assets/profile back.png"
+                  alt="Rutvik Bambhaniya - Data Analyst"
+                  className="hero-mobile-visual-img"
+                  loading="eager"
+                />
               </div>
 
             </div>
